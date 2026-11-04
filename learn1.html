@@ -174,6 +174,42 @@
     50%{box-shadow:0 7px 0 var(--teal-dark), 0 0 0 13px rgba(246,184,28,.38);}
   }
   .play-btn:disabled{cursor:default; opacity:.45; box-shadow:0 3px 0 var(--teal-dark);}
+  /* ---------- STAGE 0: chapter hub ---------- */
+  #hubView{width:100%; display:flex; flex-direction:column; align-items:center;}
+  .slogan-pill{
+    margin-top:12px; background:var(--amber); color:#fff; border-radius:999px;
+    padding:10px 26px; font-weight:800; font-size:clamp(19px,5.4vw,23px);
+    box-shadow:0 5px 0 #B97A0B; letter-spacing:.3px; text-align:center;
+  }
+  .hub-note{
+    margin-top:11px; font-weight:800; color:var(--teal-dark); text-align:center;
+    font-size:clamp(16px,4.8vw,19px); padding:0 18px; line-height:1.3;
+  }
+  .lesson-card{
+    width:calc(100% - 24px); max-width:536px; margin-top:12px; display:flex; align-items:center;
+    gap:12px; background:#fff; border:4px solid var(--teal); border-radius:22px;
+    padding:13px 15px; cursor:pointer; font-family:inherit; text-align:left;
+    box-shadow:var(--card-shadow); transition:transform .12s;
+  }
+  .lesson-card:active{transform:scale(.985);}
+  .lesson-card.done{border-color:var(--green); background:#F4FBF3;}
+  .lc-num{
+    width:46px; height:46px; flex:none; border-radius:50%; background:var(--teal); color:#fff;
+    font-size:23px; font-weight:800; display:flex; align-items:center; justify-content:center;
+  }
+  .lesson-card.done .lc-num{background:var(--green);}
+  .lc-main{flex:1; min-width:0;}
+  .lc-title{font-size:clamp(18.5px,5.2vw,22px); font-weight:800; color:var(--teal-dark); line-height:1.15;}
+  .lc-sub{font-size:clamp(13.5px,4vw,15.5px); font-weight:700; color:#5B7A7E; margin-top:2px; line-height:1.25;}
+  .lc-state{flex:none; font-size:18px; font-weight:800; color:#B97A0B; text-align:center; line-height:1.25; min-width:44px;}
+  .lc-state .lc-play{color:var(--teal); font-size:24px;}
+  .tryit-card{border-color:var(--amber);}
+  .tryit-card .lc-num{background:var(--amber); font-size:22px;}
+  .tryit-card .lc-title{color:#8A5A00;}
+  .tryit-card.locked{opacity:.6; border-style:dashed;}
+  .tryit-card.done{border-color:var(--green); background:#F4FBF3;}
+  .tryit-card.done .lc-num{background:var(--green);}
+  .shake{animation:wobble .45s ease;}
   /* ---------- STAGE 1: your book page ---------- */
   #bookView{width:100%; display:flex; flex-direction:column; align-items:center;}
   .book-card{
@@ -194,7 +230,9 @@
   .done-note{
     margin-top:10px; background:#FFF3D6; border:3px solid #FFE1A1; color:#8A5A00;
     border-radius:999px; font-weight:800; font-size:15px; padding:6px 16px; box-shadow:0 3px 0 #FFE1A1;
+    text-align:center;
   }
+  .back-row{margin-top:10px; text-align:center;}
   /* ---------- STAGE 2: read with Mia ---------- */
   #readView{width:100%; display:flex; flex-direction:column; align-items:center;}
   .read-card{
@@ -264,7 +302,7 @@
     font-size:clamp(17.5px,5vw,21px); font-weight:700; color:var(--ink); line-height:1.45; margin-top:10px;
   }
   .term-hint{font-size:clamp(19px,5.4vw,23px); font-weight:800; color:#A07B4F; padding:16px 6px;}
-  /* ---------- STAGE 4: Mia's classroom (footage + whiteboard) ---------- */
+  /* ---------- STAGE 4: Mia's classroom (lecture film + whiteboard recap) ---------- */
   #classView{width:100%; display:flex; flex-direction:column; align-items:center;}
   .class-head{
     width:calc(100% - 24px); max-width:536px; display:flex; align-items:flex-end; gap:8px; margin-top:8px;
@@ -288,11 +326,19 @@
     box-shadow:var(--card-shadow); background:#FFF7E0; flex:none;
   }
   .footage video{width:100%; aspect-ratio:4/3; display:block; object-fit:cover; background:#FFF7E0;}
+  .footage.film video{aspect-ratio:16/9;}
   .footage-tag{
     position:absolute; left:10px; top:10px; z-index:2; background:var(--amber); color:#fff;
     font-weight:800; font-size:14.5px; border-radius:999px; padding:4px 13px;
     box-shadow:0 3px 0 #B97A0B; letter-spacing:.4px;
   }
+  .film-play{
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:4;
+    width:92px; height:92px; border-radius:50%; border:5px solid #fff; background:var(--teal);
+    color:#fff; font-size:38px; cursor:pointer; box-shadow:0 10px 24px rgba(9,90,98,.45);
+    font-family:inherit; line-height:1;
+  }
+  .film-play:active{transform:translate(-50%,-50%) scale(.94);}
   @media (min-width:520px){
     .teach-split{flex-direction:row; align-items:flex-start;}
     .footage{flex:0 0 46%;}
@@ -310,6 +356,10 @@
   .board-title{
     font-size:clamp(19px,5.4vw,23px); font-weight:800; color:var(--teal-dark);
     text-align:center; margin-bottom:4px;
+  }
+  .board-empty{
+    text-align:center; font-weight:800; color:#A07B4F; line-height:1.45;
+    font-size:clamp(17px,5vw,20px); padding:24px 8px;
   }
   .kp{
     position:relative; display:flex; gap:11px; align-items:center; background:#F2FAFA;
@@ -490,7 +540,7 @@
     <button class="tgl" id="voiceBtn" aria-pressed="true">🗣️ Voice</button>
   </div>
 
-  <div class="partline" id="partLine">Step 1 · Your Book Page</div>
+  <div class="partline" id="partLine">Chapter 1 · Choose a Lesson</div>
 
   <!-- Mia + her speech bubble (tap Mia to hear her say it again) -->
   <div class="dock" id="dock" role="button" aria-label="Mia. Tap to hear her again.">
@@ -504,18 +554,43 @@
 
   <div class="praise" id="praise" aria-live="polite"></div>
 
-  <!-- STAGE 1: the book page itself — Lesson 1 of Chapter 1, as printed -->
-  <div id="bookView">
+  <!-- STAGE 0: the chapter hub — book page, slogan, lesson cards, Try It -->
+  <div id="hubView">
+    <div class="book-card">
+      <div class="book-tag">📖 YOUR BOOK · CHAPTER 1 📖</div>
+      <img src="img/learn-c1-lesson1-page.jpg" alt="Your book: Chapter 1 — My Busy Body" draggable="false">
+      <div class="book-cap">Chapter 1 · My Busy Body</div>
+    </div>
+    <div class="slogan-pill">🌟 No Teacher Needed! 🌟</div>
+    <div class="hub-note" id="hubNote">Tap a lesson and learn with Mia, step by step!</div>
+    <div id="lessonCards" style="width:100%; display:flex; flex-direction:column; align-items:center;"></div>
+    <button class="lesson-card tryit-card locked" id="tryitCard" aria-label="Try This! The Glitter Germs Test">
+      <div class="lc-num">🧪</div>
+      <div class="lc-main">
+        <div class="lc-title">Try This! — The Glitter Germs Test</div>
+        <div class="lc-sub" id="tryitSub">Finish a lesson to unlock!</div>
+      </div>
+      <div class="lc-state" id="tryitState">🔒</div>
+    </button>
+    <div class="done-note" id="hubDoneNote" hidden>🏆 You finished the whole chapter! 🏆</div>
+    <button class="play-btn" id="chapterFinishBtn" hidden>🏆 See Your Chapter Stars!</button>
+  </div>
+
+  <!-- STAGE 1: the book page itself — the current lesson, as printed -->
+  <div id="bookView" hidden>
     <div class="book-card">
       <div class="book-tag">📖 YOUR BOOK PAGE 📖</div>
-      <img id="bookPageImg" src="img/learn-c1-lesson1-page.jpg" alt="Your book page: What My Body Parts Do — Lesson 1 of Chapter 1" draggable="false">
-      <div class="book-cap">Chapter 1 · Lesson 1<br>What My Body Parts Do</div>
+      <img id="bookPageImg" src="img/learn-c1-lesson1-page.jpg" alt="Your book page" draggable="false">
+      <div class="book-cap" id="bookCap">Chapter 1 · Lesson 1<br>What My Body Parts Do</div>
     </div>
     <div class="done-note" id="doneNote" hidden>⭐ You learned this before! You can learn it again! ⭐</div>
     <button class="play-btn" id="startBtn">▶ Start Learning</button>
+    <div class="back-row">
+      <button class="mini-btn" id="backHubBtn">⬅ All Lessons</button>
+    </div>
   </div>
 
-  <!-- STAGE 2: read with Mia — the paragraph, read aloud, word by word -->
+  <!-- STAGE 2: read with Mia — the lesson text, read aloud, word by word -->
   <div id="readView" hidden>
     <div class="read-card">
       <div class="read-title">📖 Read with Mia 📖</div>
@@ -527,17 +602,17 @@
     <button class="play-btn" id="toTermsBtn" disabled>🔤 Words in Our Paragraph</button>
   </div>
 
-  <!-- STAGE 3: words in our paragraph — tap a shining word, Mia explains it -->
+  <!-- STAGE 3: words in our text — tap a shining word, Mia explains it -->
   <div id="termsView" hidden>
     <div class="read-card">
-      <div class="read-title">🔤 Words in Our Paragraph 🔤</div>
+      <div class="read-title" id="termsTitle">🔤 Words in Our Paragraph 🔤</div>
       <div class="read-text terms-text" id="termsText"></div>
       <div style="text-align:center;">
-        <button class="sense-chip" id="senseChip">⭐ Special word: <b>sense organs</b></button>
+        <button class="sense-chip" id="senseChip" hidden>⭐ Special word: <b>sense organs</b></button>
       </div>
     </div>
     <div class="term-stage" id="termStage">
-      <div class="term-hint" id="termHint">👆 Tap a shining word in the paragraph!</div>
+      <div class="term-hint" id="termHint">👆 Tap a shining word!</div>
       <div id="termBody" hidden>
         <div class="term-title" id="termTitle"></div>
         <div id="termPicWrap"></div>
@@ -547,19 +622,21 @@
     <button class="play-btn" id="toClassBtn" hidden>🏫 To the Classroom ➜</button>
   </div>
 
-  <!-- STAGE 4: the virtual classroom — footage on half the screen, whiteboard beside it -->
+  <!-- STAGE 4: the virtual classroom — Mia's lecture film, then the whiteboard recap -->
   <div id="classView" hidden>
     <div class="class-head">
       <img class="class-mia" id="classMia" src="img/mia-stage.jpg" alt="Mia, your teacher" draggable="false">
       <div class="class-sign">🏫 Mia's Classroom 🏫</div>
     </div>
     <div class="teach-split">
-      <div class="footage">
-        <div class="footage-tag">🎬 Watch!</div>
-        <video id="lectureVideo" muted loop playsinline preload="auto" aria-label="Mia's teaching film"></video>
+      <div class="footage film">
+        <div class="footage-tag">🎬 Mia's Film</div>
+        <video id="lectureVideo" playsinline preload="none" aria-label="Mia's lecture film"></video>
+        <button class="film-play" id="filmPlayBtn" hidden aria-label="Play Mia's film">▶</button>
       </div>
       <div class="board" id="board">
         <div class="board-title">⭐ Key Points ⭐</div>
+        <div class="board-empty" id="boardEmpty">🎬 Watch Mia's film first!<br>Then we will remember the key points together.</div>
         <div id="boardPoints"></div>
         <!-- the "we do" beat: one quick question together, before the quiz -->
         <div class="wedo" id="wedoBox" hidden>
@@ -568,10 +645,13 @@
         </div>
       </div>
     </div>
+    <div class="back-row">
+      <button class="mini-btn" id="filmAgainBtn" hidden>↻ Watch the Film Again</button>
+    </div>
     <button class="play-btn" id="toQuizBtn" hidden>❓ Quiz Time!</button>
   </div>
 
-  <!-- STAGE 5: quiz from the same paragraph -->
+  <!-- STAGE 5: quiz from the same lesson -->
   <div id="quizView" hidden>
     <div class="opts" id="opts"></div>
   </div>
@@ -608,16 +688,16 @@
 
   <div class="credit">✦ Prepared by: Zulfiqar Ali Sajid ✦</div>
 
-  <!-- STAGE 7: finish — stars and recap (the Try It now has its own stage) -->
+  <!-- CHAPTER FINISH: all 3 lessons + the Try It done -->
   <div class="overlay" id="endOverlay" hidden>
-    <div class="game-name">🎉 All Done!</div>
-    <h1>Well done,<br>little scientist!</h1>
+    <div class="game-name" id="finGameName">🏆 Chapter 1 Complete!</div>
+    <h1 id="finH1">You finished<br>Chapter 1!</h1>
     <img class="mascot-dance" src="img/mia-stage.jpg" alt="Mia dancing">
     <div class="stars-row" id="starsRow" aria-label="Stars you earned"></div>
-    <div class="moral-pill">⭐ I can tell what each part of my body does! ⭐</div>
+    <div class="moral-pill" id="finPill">🌟 No Teacher Needed! 🌟</div>
     <div class="chips" id="recapChips"></div>
     <p class="honest-line">A mixed review quiz will come back in a few days to make it stick.</p>
-    <button class="big-btn" id="againBtn">↻ Learn Again</button>
+    <button class="big-btn" id="againBtn">🏠 Back to Lessons</button>
     <button class="big-btn alt" id="gameBtn">🎮 Chapter Game</button>
   </div>
 
@@ -628,120 +708,285 @@
   var STAR = '<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 6 L63 37 L96 39 L70 60 L79 93 L50 74 L21 93 L30 60 L4 39 L37 37 Z" fill="#FFC93C" stroke="#E8A20C" stroke-width="5" stroke-linejoin="round"/></svg>';
   var STAR_BIG = '<svg class="fin-star" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 6 L63 37 L96 39 L70 60 L79 93 L50 74 L21 93 L30 60 L4 39 L37 37 Z" fill="#FFC93C" stroke="#E8A20C" stroke-width="5" stroke-linejoin="round"/></svg>';
 
-  /* ============ CHAPTER 1 — SELF-TEACHING SAMPLE · v2 ============
+  /* ============ CHAPTER 1 — SELF-TEACHING · v3 (FULL CHAPTER) ============
      Source: NNCP Science — Grade 2, content_ch1.py ("My Busy Body").
-     Flow: the book page opens → Mia READS the paragraph aloud (word-by-
-     word highlighting) → WORDS IN OUR PARAGRAPH: every key term in the
-     paragraph shines; tap one and Mia explains it at the front, with the
-     book's picture where a picture teaches better → MIA'S CLASSROOM: a
-     real mini-lesson per key point (hook → explain → example from the
-     chapter → recap) with a book-art film playing on half the screen →
-     a "we do" question together → a quiz from THIS paragraph → TRY THIS!
-     step by step, Mia reading each step with its own little film → stars.
+     A chapter HUB opens the page: the book page, Mia's greeting, the
+     book's slogan "No Teacher Needed!", three lesson cards (each with
+     its own tick + stars) and the chapter Try It card (unlocked by
+     finishing any lesson). Inside a lesson the proven v2 flow runs:
+     the lesson's own book page → Mia READS the lesson text aloud (word-
+     by-word highlighting) → WORDS: the text returns with its key terms
+     shining; tap one and Mia explains it at the front with the book's
+     picture → MIA'S CLASSROOM: Mia introduces her LECTURE FILM (a
+     narrated video made from the book's own art — the lesson is taught
+     by the film), then the WHITEBOARD RECAP writes the key points one
+     by one while Mia reads them → a "we do" question → a quiz from THIS
+     lesson (every option with spoken feedback, one kind retry, the
+     answer taught after a second miss). Finishing all three lessons
+     and the Try It opens the CHAPTER FINISH screen.
      Mia speaks with THEHRAO — a calm, unhurried, soft explaining voice:
      every line carries a MOOD and the prosody layer sets her pitch/rate
      per mood, with real pauses between the sentences of teach and
      reading lines (see MOODS below). */
-  var PARAS = [
-    "Your body is busy all day long. Every part of your body has an important job to do.",
-    "Your eyes help you see. With your eyes you can read a book, watch the birds and find your friends.",
-    "Your ears help you hear. With your ears you can hear your teacher, listen to a story and enjoy songs.",
-    "Your nose helps you smell. With your nose you can smell sweet flowers, fresh rain and hot, tasty food."
-  ];
-  var CORE_LINE = "Your body is busy all day long. Every part of your body has an important job to do.";
-  var GREETING = "Hello, little scientist! I am Mia. " + CORE_LINE;
-
-  /* ---- the terms stage: the key terms THIS paragraph carries ----
-     spans found in the paragraph text open a front card; "sense organs"
-     never appears word-for-word in the paragraph, so it rides on the
-     special-word chip under the paragraph. Explanations are grounded in
-     the paragraph + the book's keyword meanings only. */
-  var TERMS = {
-    bodyparts: { title:"body parts", pic:"img/c1-word-body-parts.jpg",
-      say:"Body parts! Body parts are all the parts of you — your eyes, your ears, your nose, your mouth, your hands and your legs. Every part of your body has an important job to do." },
-    eyes: { title:"eyes", pic:"img/c1-match-see.jpg",
-      say:"Eyes! Your eyes help you see. With your eyes you can read a book, watch the birds and find your friends." },
-    ears: { title:"ears", pic:"img/c1-match-hear.jpg",
-      say:"Ears! Your ears help you hear. With your ears you can hear your teacher, listen to a story and enjoy songs." },
-    nose: { title:"nose", pic:"img/c1-match-smell.jpg",
-      say:"Nose! Your nose helps you smell. With your nose you can smell sweet flowers, fresh rain and hot, tasty food." },
-    jobs: { title:"see · hear · smell", pics:["img/c1-match-see.jpg","img/c1-match-hear.jpg","img/c1-match-smell.jpg"],
-      say:"See, hear, smell! These are the special jobs of your sense organs. Your eyes see. Your ears hear. Your nose smells." },
-    senseorgans: { title:"sense organs", pic:"img/c1-word-sense-organs.jpg",
-      say:"Sense organs! Sense organs are the sensing parts of your body. Your eyes, your ears and your nose are sense organs." }
-  };
-  /* phrases in the paragraph text -> term card */
-  var TERM_SPANS = [
-    { re:/part of your body/i, id:"bodyparts" },
-    { re:/\beyes\b/i, id:"eyes" },
-    { re:/\bears\b/i, id:"ears" },
-    { re:/\bnose\b/i, id:"nose" },
-    { re:/\bsee\b/i, id:"jobs" },
-    { re:/\bhear\b/i, id:"jobs" },
-    { re:/\bsmell\b/i, id:"jobs" }
-  ];
-
-  /* ---- the classroom: a mini-lesson per key point ----
-     Each point is taught as hook (ask) -> explanation -> example taken
-     from the chapter's own text -> recap, while its book-art film plays
-     on half the screen. Board entries keep the book's verbatim meanings. */
-  var KEY_POINTS = [
-    { term:"body parts", def:"all the parts of you", img:"img/c1-word-body-parts.jpg",
-      clip:"video/lecture-parts.mp4",
-      lines:[
-        { m:"ask",   t:"Do you know why your body is busy all day long?" },
-        { m:"teach", t:"Body parts are all the parts of you. Your eyes, your ears, your nose, your mouth, your hands and your legs are all body parts. And every part of your body has an important job to do." },
-        { m:"teach", t:"Just look at your hands — they can hold, write, draw and clap. And your legs can walk, run, jump and kick a ball!" },
-        { m:"teach", t:"So remember — body parts are all the parts of you, and every part has an important job!" } ]},
-    { term:"sense organs", def:"the sensing parts", img:"img/c1-word-sense-organs.jpg",
-      clip:"video/lecture-senses.mp4",
-      lines:[
-        { m:"ask",   t:"Now tell me — which parts of your body help you sense the world around you?" },
-        { m:"teach", t:"They are called your sense organs. Sense organs are the sensing parts of your body. Your eyes, your ears and your nose are sense organs." },
-        { m:"teach", t:"When you watch the birds, your eyes are sensing. When you enjoy a song, your ears are sensing. When you smell fresh rain, your nose is sensing!" },
-        { m:"teach", t:"So remember — eyes, ears and nose are your sense organs, your sensing parts!" } ]},
-    { term:"Eyes · Ears · Nose", def:"", jobs:"👀 Eyes — see &nbsp; 👂 Ears — hear &nbsp; 👃 Nose — smell",
-      pics:["img/c1-match-see.jpg","img/c1-match-hear.jpg","img/c1-match-smell.jpg"],
-      clip:"video/lecture-jobs.mp4",
-      lines:[
-        { m:"ask",   t:"Shall we visit your sense organs, one by one?" },
-        { m:"teach", t:"Your eyes help you see. Your ears help you hear. Your nose helps you smell. Each sense organ has its own special job." },
-        { m:"teach", t:"With your eyes you can read a book, watch the birds and find your friends. With your ears you can hear your teacher, listen to a story and enjoy songs. With your nose you can smell sweet flowers, fresh rain and hot, tasty food." },
-        { m:"teach", t:"So remember — eyes see, ears hear, nose smells. What busy sense organs you have!" } ]}
-  ];
-
-  /* the "we do" beat: one question together on the board before the quiz */
-  var WEDO = {
-    q:"Quick check! Which body part helps you hear?",
-    ans:"ears",
-    opts:[
-      { id:"eyes", word:"Eyes", fb:"Your eyes help you see. Listen again: which part helps you hear?" },
-      { id:"ears", word:"Ears", fb:"Yes! Your ears help you hear." },
-      { id:"nose", word:"Nose", fb:"Your nose helps you smell. Which part helps you hear?" }
-    ]
-  };
-
-  /* the quiz — every question from THIS paragraph only; every option
-     carries its own feedback, drawn from the paragraph's words */
-  var QUIZ = [
-    { q:"Every part of your body has…", ans:"job", opts:[
-      { id:"job", word:"an important job", fb:"Yes! The paragraph says: Every part of your body has an important job to do." },
-      { id:"food", word:"a tasty food", fb:"Tasty food is what your nose smells in our paragraph. Every part of your body has an important job." },
-      { id:"story", word:"a good story", fb:"A story is what your ears listen to. Every part of your body has an important job." } ]},
-    { q:"What do your eyes help you do?", ans:"see", opts:[
-      { id:"hear", word:"hear", fb:"Hearing is your ears' job. Your eyes help you see." },
-      { id:"see", word:"see", fb:"Yes! Your eyes help you see. With your eyes you can read a book, watch the birds and find your friends." },
-      { id:"smell", word:"smell", fb:"Smelling is your nose's job. Your eyes help you see." } ]},
-    { q:"With your nose, you can smell…", ans:"flowers", opts:[
-      { id:"birds", word:"the birds", fb:"You watch the birds with your eyes. Your nose can smell sweet flowers." },
-      { id:"story", word:"a story", fb:"You listen to a story with your ears. Your nose can smell sweet flowers." },
-      { id:"flowers", word:"sweet flowers", fb:"Yes! With your nose you can smell sweet flowers, fresh rain and hot, tasty food." } ]},
-    { q:"Why is your body busy all day long?", ans:"jobs", opts:[
-      { id:"jobs", word:"Because every part has a job to do", fb:"Yes! Every part of your body has an important job to do. That is why your body is busy all day long." },
-      { id:"sleep", word:"Because we sleep all day", fb:"Sleeping is resting — that is not being busy! Your body is busy because every part has a job to do." },
-      { id:"run", word:"Because we run all day", fb:"We do not run all day. The paragraph says your body is busy because every part has a job to do." } ]}
-  ];
   var PRAISE = ["Great job! ⭐", "Well done! ⭐", "Super! ⭐", "Yes! That's right! ⭐", "Hooray! ⭐"];
+
+  var LESSONS = [
+  /* ================= LESSON 1 — What My Body Parts Do ================= */
+  { id:"l1", num:1,
+    title:"What My Body Parts Do",
+    cardSub:"Eyes, ears, nose, mouth, hands and legs",
+    pageImg:"img/learn-c1-lesson1-page.jpg",
+    greet:"Hello, little scientist! I am Mia. Your body is busy all day long. Every part of your body has an important job to do.",
+    readIntro:"Listen carefully! I will read our paragraph. Follow the words with your eyes!",
+    wordsBtn:"🔤 Words in Our Paragraph",
+    wordsTitle:"🔤 Words in Our Paragraph 🔤",
+    termsIntro:"Here is our paragraph again! Some words are shining. Tap a shining word, and I will explain it!",
+    paras:[
+      "Your body is busy all day long. Every part of your body has an important job to do.",
+      "Your eyes help you see. With your eyes you can read a book, watch the birds and find your friends.",
+      "Your ears help you hear. With your ears you can hear your teacher, listen to a story and enjoy songs.",
+      "Your nose helps you smell. With your nose you can smell sweet flowers, fresh rain and hot, tasty food.",
+      "Your mouth helps you eat, drink and talk. Your tongue tastes the food — sweet, sour or salty.",
+      "Your hands help you hold and feel. With your hands you can write, draw, clap and carry your school bag.",
+      "Your legs and feet help you walk, run, jump and kick a ball."
+    ],
+    terms:{
+      bodyparts: { title:"body parts", pic:"img/c1-word-body-parts.jpg",
+        say:"Body parts! Body parts are all the parts of you — your eyes, your ears, your nose, your mouth, your hands and your legs. Every part of your body has an important job to do." },
+      eyes: { title:"eyes", pic:"img/c1-match-see.jpg",
+        say:"Eyes! Your eyes help you see. With your eyes you can read a book, watch the birds and find your friends." },
+      ears: { title:"ears", pic:"img/c1-match-hear.jpg",
+        say:"Ears! Your ears help you hear. With your ears you can hear your teacher, listen to a story and enjoy songs." },
+      nose: { title:"nose", pic:"img/c1-match-smell.jpg",
+        say:"Nose! Your nose helps you smell. With your nose you can smell sweet flowers, fresh rain and hot, tasty food." },
+      jobs: { title:"see · hear · smell", pics:["img/c1-match-see.jpg","img/c1-match-hear.jpg","img/c1-match-smell.jpg"],
+        say:"See, hear, smell! These are the special jobs of your sense organs. Your eyes see. Your ears hear. Your nose smells." },
+      mouth: { title:"mouth", pic:"img/c1-term-mouth.jpg",
+        say:"Mouth! Your mouth helps you eat, drink and talk. And your tongue tastes the food — sweet, sour or salty." },
+      hands: { title:"hands", pic:"img/c1-match-feel.jpg",
+        say:"Hands! Your hands help you hold and feel. With your hands you can write, draw, clap and carry your school bag." },
+      legs: { title:"legs", pic:"img/c1-match-run.jpg",
+        say:"Legs! Your legs and feet help you walk, run, jump and kick a ball." },
+      senseorgans: { title:"sense organs", pic:"img/c1-word-sense-organs.jpg",
+        say:"Sense organs! Sense organs are the sensing parts of your body. Your eyes, your ears and your nose are sense organs." }
+    },
+    termSpans:[
+      { re:/part of your body/i, id:"bodyparts" },
+      { re:/\beyes\b/i, id:"eyes" },
+      { re:/\bears\b/i, id:"ears" },
+      { re:/\bnose\b/i, id:"nose" },
+      { re:/\bmouth\b/i, id:"mouth" },
+      { re:/\bhands\b/i, id:"hands" },
+      { re:/\bfeel\b/i, id:"hands" },
+      { re:/\blegs\b/i, id:"legs" },
+      { re:/\bfeet\b/i, id:"legs" },
+      { re:/\bsee\b/i, id:"jobs" },
+      { re:/\bhear\b/i, id:"jobs" },
+      { re:/\bsmell\b/i, id:"jobs" }
+    ],
+    chip:{ id:"senseorgans", label:"⭐ Special word: <b>sense organs</b>" },
+    classIntro:"Welcome to my classroom! Watch my film. It will teach you what your body parts do!",
+    video:"video-lecture/video-lecture-ch1-l1.mp4",
+    recap:[
+      { term:"Body parts", def:"all the parts of you", img:"img/c1-word-body-parts.jpg",
+        say:"Body parts are all the parts of you." },
+      { term:"Eyes · Ears · Nose", def:"", jobs:"👀 Eyes — see &nbsp; 👂 Ears — hear &nbsp; 👃 Nose — smell",
+        pics:["img/c1-match-see.jpg","img/c1-match-hear.jpg","img/c1-match-smell.jpg"],
+        say:"Your eyes see. Your ears hear. And your nose smells." },
+      { term:"Mouth", def:"eat, drink and talk", img:"img/c1-term-mouth.jpg",
+        say:"Your mouth helps you eat, drink and talk." },
+      { term:"Hands", def:"hold and feel", img:"img/c1-match-feel.jpg",
+        say:"Your hands help you hold and feel." },
+      { term:"Legs", def:"walk, run and jump", img:"img/c1-match-run.jpg",
+        say:"Your legs help you walk, run and jump." }
+    ],
+    wedo:{
+      q:"Quick check! Which body part helps you hear?",
+      ans:"ears",
+      opts:[
+        { id:"eyes", word:"Eyes", fb:"Your eyes help you see. Listen again: which part helps you hear?" },
+        { id:"ears", word:"Ears", fb:"Yes! Your ears help you hear." },
+        { id:"nose", word:"Nose", fb:"Your nose helps you smell. Which part helps you hear?" }
+      ]
+    },
+    quiz:[
+      { q:"Every part of your body has…", ans:"job", opts:[
+        { id:"job", word:"an important job", fb:"Yes! The paragraph says: Every part of your body has an important job to do." },
+        { id:"food", word:"a tasty food", fb:"Tasty food is what your nose smells in our paragraph. Every part of your body has an important job." },
+        { id:"story", word:"a good story", fb:"A story is what your ears listen to. Every part of your body has an important job." } ]},
+      { q:"What do your eyes help you do?", ans:"see", opts:[
+        { id:"hear", word:"hear", fb:"Hearing is your ears' job. Your eyes help you see." },
+        { id:"see", word:"see", fb:"Yes! Your eyes help you see. With your eyes you can read a book, watch the birds and find your friends." },
+        { id:"smell", word:"smell", fb:"Smelling is your nose's job. Your eyes help you see." } ]},
+      { q:"With your nose, you can smell…", ans:"flowers", opts:[
+        { id:"birds", word:"the birds", fb:"You watch the birds with your eyes. Your nose can smell sweet flowers." },
+        { id:"story", word:"a story", fb:"You listen to a story with your ears. Your nose can smell sweet flowers." },
+        { id:"flowers", word:"sweet flowers", fb:"Yes! With your nose you can smell sweet flowers, fresh rain and hot, tasty food." } ]},
+      { q:"Why is your body busy all day long?", ans:"jobs", opts:[
+        { id:"jobs", word:"Because every part has a job to do", fb:"Yes! Every part of your body has an important job to do. That is why your body is busy all day long." },
+        { id:"sleep", word:"Because we sleep all day", fb:"Sleeping is resting — that is not being busy! Your body is busy because every part has a job to do." },
+        { id:"run", word:"Because we run all day", fb:"We do not run all day. The paragraph says your body is busy because every part has a job to do." } ]}
+    ]
+  },
+  /* ================= LESSON 2 — Looking After My Senses ================= */
+  { id:"l2", num:2,
+    title:"Looking After My Senses",
+    cardSub:"Caring for my eyes, ears, nose and skin",
+    pageImg:"img/learn-c1-lesson2-page.jpg",
+    greet:"Hello, little scientist! Your sense organs are precious gifts. You must take good care of them every day.",
+    readIntro:"Listen carefully! I will read our paragraph. Follow the words with your eyes!",
+    wordsBtn:"🔤 Words in Our Paragraph",
+    wordsTitle:"🔤 Words in Our Paragraph 🔤",
+    termsIntro:"Here is our paragraph again! Some words are shining. Tap a shining word, and I will explain it!",
+    paras:[
+      "Your sense organs are precious gifts. You must take good care of them every day.",
+      "Keep your ears clean. Wipe the outside of your ears gently with a soft, wet cloth.",
+      "Never push anything into your ears — no sticks, no pins, no pencils. They can hurt your ears badly.",
+      "Keep dust away from your eyes, and never rub your eyes with dirty hands.",
+      "Very bright light can hurt your eyes. Wear a cap or sunglasses in strong sunshine, and never look straight at the Sun.",
+      "Blow your nose gently into a tissue or a handkerchief. Wash your skin every day and take a bath to stay clean and fresh.",
+      "Your eyes blink many times every day. Blinking washes your eyes and keeps them clean and wet."
+    ],
+    terms:{
+      senseorgans: { title:"sense organs", pic:"img/c1-word-sense-organs.jpg",
+        say:"Sense organs! Your sense organs are precious gifts. You must take good care of them every day." },
+      clean: { title:"clean", pic:"img/c1-word-clean.jpg",
+        say:"Clean! Clean means free from dirt and germs. Wash your skin every day, and take a bath to stay clean and fresh." },
+      ears: { title:"ears", pic:"img/c1-match-hear.jpg",
+        say:"Ears! Keep your ears clean. Wipe the outside of your ears gently with a soft, wet cloth. And never push anything into your ears — no sticks, no pins, no pencils!" },
+      eyes: { title:"eyes", pic:"img/c1-match-see.jpg",
+        say:"Eyes! Keep dust away from your eyes, and never rub your eyes with dirty hands. Very bright light can hurt your eyes, so wear a cap or sunglasses in strong sunshine." },
+      nose: { title:"nose", pic:"img/c1-match-smell.jpg",
+        say:"Nose! Blow your nose gently into a tissue or a handkerchief." }
+    },
+    termSpans:[
+      { re:/sense organs/i, id:"senseorgans" },
+      { re:/\bclean\b/i, id:"clean" },
+      { re:/\bears\b/i, id:"ears" },
+      { re:/\beyes\b/i, id:"eyes" },
+      { re:/\bnose\b/i, id:"nose" }
+    ],
+    chip:null,
+    classIntro:"Welcome to my classroom! Watch my film. It will teach you how to look after your senses!",
+    video:"video-lecture/video-lecture-ch1-l2.mp4",
+    recap:[
+      { term:"Sense organs", def:"precious gifts — take care of them", img:"img/c1-word-sense-organs.jpg",
+        say:"Sense organs are precious gifts. Take good care of them every day." },
+      { term:"Clean ears", def:"wipe gently — never push things in", img:"img/c1-word-clean.jpg",
+        say:"Clean your ears gently with a soft, wet cloth. And never push anything into your ears." },
+      { term:"Eyes", def:"keep dust away", img:"img/c1-match-see.jpg",
+        say:"Keep dust away from your eyes, and never rub them with dirty hands." },
+      { term:"Bright sun", def:"wear a cap or sunglasses",
+        say:"Wear a cap or sunglasses in strong sunshine. And never look straight at the Sun." },
+      { term:"Clean skin", def:"wash every day", img:"img/c1-word-soap.jpg",
+        say:"Wash your skin every day, and take a bath to stay clean and fresh." }
+    ],
+    wedo:{
+      q:"Quick check! What must you NEVER push into your ears?",
+      ans:"pin",
+      opts:[
+        { id:"cloth", word:"A soft cloth", fb:"A soft, wet cloth wipes the outside of your ears, gently. What must never go inside your ears?" },
+        { id:"pin", word:"A stick or a pin", fb:"Yes! Never push anything into your ears — no sticks, no pins, no pencils. They can hurt your ears badly." },
+        { id:"soap", word:"Soap", fb:"Soap washes your skin clean. What must never be pushed into your ears?" }
+      ]
+    },
+    quiz:[
+      { q:"How do you clean your ears?", ans:"cloth", opts:[
+        { id:"cloth", word:"Wipe the outside with a soft, wet cloth", fb:"Yes! Keep your ears clean. Wipe the outside of your ears gently with a soft, wet cloth." },
+        { id:"pencil", word:"Push a pencil inside", fb:"No, never! Never push anything into your ears — no sticks, no pins, no pencils. Wipe the outside gently with a soft, wet cloth." },
+        { id:"dirty", word:"Rub them with dirty hands", fb:"Dirty hands are full of germs! Wipe the outside of your ears gently with a soft, wet cloth." } ]},
+      { q:"What can hurt your ears badly?", ans:"sticks", opts:[
+        { id:"cloth", word:"A soft, wet cloth", fb:"A soft, wet cloth only wipes the outside, gently. It is sticks and pins pushed inside that can hurt your ears badly." },
+        { id:"sticks", word:"Sticks and pins pushed in", fb:"Yes! Never push anything into your ears — no sticks, no pins, no pencils. They can hurt your ears badly." },
+        { id:"soap", word:"Soap and water", fb:"Soap and water wash your skin clean and fresh. Sticks and pins pushed into your ears can hurt them badly." } ]},
+      { q:"What keeps your eyes safe in strong sunshine?", ans:"cap", opts:[
+        { id:"sun", word:"Looking straight at the Sun", fb:"Never look straight at the Sun! Very bright light can hurt your eyes. A cap or sunglasses keep them safe." },
+        { id:"cap", word:"A cap or sunglasses", fb:"Yes! Very bright light can hurt your eyes. Wear a cap or sunglasses in strong sunshine." },
+        { id:"rub", word:"Rubbing them", fb:"Rubbing can hurt your eyes — and never use dirty hands! A cap or sunglasses keep your eyes safe in strong sunshine." } ]},
+      { q:"What does blinking do for your eyes?", ans:"washes", opts:[
+        { id:"washes", word:"It washes them and keeps them clean and wet", fb:"Yes! Your eyes blink many times every day. Blinking washes your eyes and keeps them clean and wet." },
+        { id:"sleepy", word:"It makes them sleepy", fb:"Blinking does not make your eyes sleepy. Blinking washes your eyes and keeps them clean and wet." },
+        { id:"smell", word:"It helps them smell", fb:"Smelling is your nose's job! Blinking washes your eyes and keeps them clean and wet." } ]}
+    ]
+  },
+  /* ================= LESSON 3 — Story: Achoo! Cover Up, Sam! ================= */
+  { id:"l3", num:3,
+    title:"Achoo! Cover Up, Sam!",
+    cardSub:"A story about germs — cover up, Sam!",
+    pageImg:"img/learn-c1-lesson3-page.jpg",
+    greet:"Hello, little scientist! Story time! Poor Sam does not feel well today. Let us learn how to stop germs!",
+    readIntro:"Listen carefully! I will read our story. Follow the words with your eyes!",
+    wordsBtn:"🔤 Words in Our Story",
+    wordsTitle:"🔤 Words in Our Story 🔤",
+    termsIntro:"Here is our story again! Some words are shining. Tap a shining word, and I will explain it!",
+    paras:[
+      "Mia: What a sunny day! Let us have our picnic under the big tree.",
+      "Sam: Achoo! Achoo! My nose is running. I do not feel well today.",
+      "Mia: Oh, Sam! Cover your nose and mouth when you sneeze.",
+      "Sam: Why must I cover up, Mia?",
+      "Noor: Tiny germs fly out when we cough or sneeze. They can travel to others and make them sick.",
+      "Zoe: Sneeze into your elbow or a tissue. Then put the tissue in the bin.",
+      "Max: Dirty hands carry germs too. Let us wash our hands with soap before we eat!",
+      "All: Clean hands, cover up — no germs can catch us!"
+    ],
+    terms:{
+      germs: { title:"germs", pic:"img/c1-word-germs.jpg",
+        say:"Germs! Germs are tiny things that make us sick. Tiny germs fly out when we cough or sneeze. They can travel to others and make them sick." },
+      sneeze: { title:"sneeze", pic:"img/c1-word-sneeze.jpg",
+        say:"Sneeze! A sneeze is air bursting from the nose. Cover your nose and mouth when you sneeze!" },
+      soap: { title:"soap", pic:"img/c1-word-soap.jpg",
+        say:"Soap! Soap washes germs away. Wash your hands with soap before you eat!" },
+      hands: { title:"hands", pic:"img/c1-match-feel.jpg",
+        say:"Hands! Dirty hands carry germs too. Let us wash our hands with soap before we eat!" }
+    },
+    termSpans:[
+      { re:/\bgerms\b/i, id:"germs" },
+      { re:/\bsneeze\b/i, id:"sneeze" },
+      { re:/\bsoap\b/i, id:"soap" },
+      { re:/\bhands\b/i, id:"hands" }
+    ],
+    chip:null,
+    classIntro:"Welcome to my classroom! Watch my film. It is Sam's story — and it teaches us about germs!",
+    video:"video-lecture/video-lecture-ch1-l3.mp4",
+    recap:[
+      { term:"Germs", def:"fly out when we cough or sneeze", img:"img/c1-word-germs.jpg",
+        say:"Tiny germs fly out when we cough or sneeze. They can travel to others and make them sick." },
+      { term:"Cover up", def:"cover your nose and mouth", img:"img/c1-word-sneeze.jpg",
+        say:"Cover your nose and mouth when you sneeze." },
+      { term:"Elbow or tissue", def:"then put the tissue in the bin",
+        say:"Sneeze into your elbow or a tissue. Then put the tissue in the bin." },
+      { term:"Soap", def:"wash hands before eating", img:"img/c1-word-soap.jpg",
+        say:"Wash your hands with soap before you eat." }
+    ],
+    wedo:{
+      q:"Quick check! Where should Sam sneeze?",
+      ans:"elbow",
+      opts:[
+        { id:"air", word:"Into the air", fb:"Into the air, the germs fly out and travel to others! Where should Sam sneeze?" },
+        { id:"elbow", word:"Into his elbow", fb:"Yes! Sneeze into your elbow or a tissue. Then the germs cannot fly to your friends." },
+        { id:"hands", word:"Onto his hands", fb:"Dirty hands carry germs too! Sam should sneeze into his elbow or a tissue." }
+      ]
+    },
+    quiz:[
+      { q:"Why must Sam cover up when he sneezes?", ans:"germs", opts:[
+        { id:"picnic", word:"Because the picnic is over", fb:"The picnic is not over! Sam must cover up because tiny germs fly out when he sneezes." },
+        { id:"germs", word:"Because tiny germs fly out", fb:"Yes! Noor tells us: Tiny germs fly out when we cough or sneeze. They can travel to others and make them sick." },
+        { id:"cold", word:"Because his nose is cold", fb:"Sam's nose is running because he does not feel well. He must cover up because tiny germs fly out when he sneezes." } ]},
+      { q:"Where should you sneeze?", ans:"elbow", opts:[
+        { id:"elbow", word:"Into your elbow or a tissue", fb:"Yes! Zoe says: Sneeze into your elbow or a tissue. Then put the tissue in the bin." },
+        { id:"air", word:"Into the air", fb:"Into the air, the germs fly out and travel to your friends! Sneeze into your elbow or a tissue." },
+        { id:"hands", word:"Into your hands", fb:"Dirty hands carry germs too! Sneeze into your elbow or a tissue." } ]},
+      { q:"What do you do with the tissue after you sneeze into it?", ans:"bin", opts:[
+        { id:"friend", word:"Give it to a friend", fb:"Oh no! Germs travel to others and make them sick. Put the tissue in the bin." },
+        { id:"pocket", word:"Keep it in your pocket", fb:"Zoe does not say that! Sneeze into a tissue — then put the tissue in the bin." },
+        { id:"bin", word:"Put it in the bin", fb:"Yes! Zoe says: Sneeze into your elbow or a tissue. Then put the tissue in the bin." } ]},
+      { q:"When must we wash our hands with soap?", ans:"eat", opts:[
+        { id:"never", word:"Never", fb:"Never is wrong! Dirty hands carry germs. Max says: Let us wash our hands with soap before we eat!" },
+        { id:"after", word:"Only after we eat", fb:"Max says wash BEFORE we eat! Dirty hands carry germs too." },
+        { id:"eat", word:"Before we eat", fb:"Yes! Max says: Dirty hands carry germs too. Let us wash our hands with soap before we eat!" } ]}
+    ]
+  }
+  ];
 
   /* ---- Try This! — the book's own Glitter Germs Test, verbatim ---- */
   var TRYIT = {
@@ -1052,21 +1297,64 @@
       scoreBox = $("scoreBox"), scoreCountEl = $("scoreCount"),
       mascotEl = $("mascot"), mascotWrap = $("mascotWrap"), thumbPopEl = $("thumbPop"),
       dockEl = $("dock"),
-      bookView = $("bookView"), readView = $("readView"), termsView = $("termsView"),
-      classView = $("classView"), quizView = $("quizView"), tryView = $("tryView"),
-      splashView = $("splashView"),
+      hubView = $("hubView"), bookView = $("bookView"), readView = $("readView"),
+      termsView = $("termsView"), classView = $("classView"), quizView = $("quizView"),
+      tryView = $("tryView"), splashView = $("splashView"),
       startBtn = $("startBtn"), toTermsBtn = $("toTermsBtn"), toClassBtn = $("toClassBtn"),
       toQuizBtn = $("toQuizBtn"),
       lectureVideo = $("lectureVideo"), tryVideo = $("tryVideo"),
+      filmPlayBtn = $("filmPlayBtn"), filmAgainBtn = $("filmAgainBtn"),
       splashTitleEl = $("splashTitle"), splashSubEl = $("splashSub");
 
-  var score = 0, lastPrompt = "";
+  /* ---------- progress: localStorage learn-g2c1-v3 ----------
+     Per-lesson {done, stars, points} + the chapter Try It + the running
+     score. A finished v2 sample (learn-g2c1-v2) seeds Lesson 1 as done
+     with its saved stars, so nobody loses their first lesson. */
+  var LSKEY = "learn-g2c1-v3";
+  var PROG = { lessons:{}, tryitDone:false, chapterShown:false, totalScore:0 };
+  function saveProg(){
+    try{ localStorage.setItem(LSKEY, JSON.stringify(PROG)); }catch(e){}
+  }
+  function loadProg(){
+    try{
+      var s = localStorage.getItem(LSKEY);
+      if(s){
+        var o = JSON.parse(s);
+        if(o && typeof o === "object"){
+          PROG.lessons = o.lessons || {};
+          PROG.tryitDone = !!o.tryitDone;
+          PROG.chapterShown = !!o.chapterShown;
+          PROG.totalScore = o.totalScore || 0;
+        }
+        return;
+      }
+      var v2 = localStorage.getItem("learn-g2c1-v2");
+      if(v2){
+        var o2 = JSON.parse(v2);
+        if(o2 && o2.stars){
+          PROG.lessons.l1 = { done:true, stars:o2.stars, points:o2.points || 0 };
+          PROG.totalScore = o2.points || 0;
+          saveProg();
+        }
+      }
+    }catch(e){}
+  }
+  function isLessonDone(id){ var p = PROG.lessons[id]; return !!(p && p.done); }
+  function anyLessonDone(){ return LESSONS.some(function(L){ return isLessonDone(L.id); }); }
+  function chapterComplete(){
+    return LESSONS.every(function(L){ return isLessonDone(L.id); }) && PROG.tryitDone;
+  }
+
+  var CUR = LESSONS[0];
+  var score = 0, scoreAtLessonStart = 0, lastPrompt = "";
   function updateScore(bumpIt){
     scoreCountEl.textContent = (Math.round(score * 10) / 10);
     if(bumpIt){ scoreBox.classList.remove("bump"); void scoreBox.offsetWidth; scoreBox.classList.add("bump"); }
   }
   function award(points){
     score += (points == null ? 1 : points);
+    PROG.totalScore = score;
+    saveProg();
     updateScore(true);
   }
   function burstIn(container, leftPct, topPct, n){
@@ -1120,14 +1408,10 @@
   function clearPraise(){
     praiseEl.textContent = ""; praiseEl.classList.remove("show");
   }
+  var VIEWS = { hub:hubView, book:bookView, read:readView, terms:termsView,
+                "class":classView, quiz:quizView, "try":tryView, splash:splashView };
   function showView(v){
-    bookView.hidden = v !== "book";
-    readView.hidden = v !== "read";
-    termsView.hidden = v !== "terms";
-    classView.hidden = v !== "class";
-    quizView.hidden = v !== "quiz";
-    tryView.hidden = v !== "try";
-    splashView.hidden = v !== "splash";
+    for(var k in VIEWS){ VIEWS[k].hidden = (k !== v); }
   }
   function splash(title, sub, partLabel, nextFn){
     clearPraise();
@@ -1145,18 +1429,131 @@
   });
 
   /* preload */
-  ["img/mia-stage.jpg", "img/mia-face.jpg", "img/learn-c1-lesson1-page.jpg",
-   "img/c1-word-body-parts.jpg", "img/c1-word-sense-organs.jpg",
-   "img/c1-match-see.jpg", "img/c1-match-hear.jpg", "img/c1-match-smell.jpg"]
-    .forEach(function(s){ var i = new Image(); i.src = s; });
+  ["img/mia-stage.jpg", "img/mia-face.jpg",
+   "img/learn-c1-lesson1-page.jpg", "img/learn-c1-lesson2-page.jpg", "img/learn-c1-lesson3-page.jpg",
+   "img/c1-word-body-parts.jpg", "img/c1-word-sense-organs.jpg", "img/c1-word-clean.jpg",
+   "img/c1-word-germs.jpg", "img/c1-word-sneeze.jpg", "img/c1-word-soap.jpg", "img/c1-term-mouth.jpg",
+   "img/c1-match-see.jpg", "img/c1-match-hear.jpg", "img/c1-match-smell.jpg",
+   "img/c1-match-feel.jpg", "img/c1-match-run.jpg"]
+  .forEach(function(s){ var i = new Image(); i.src = s; });
+
+  /* ================= STAGE 0 — THE CHAPTER HUB ================= */
+  function starStr(n){ var s = ""; for(var i=0;i<n;i++){ s += "⭐"; } return s; }
+  function renderHub(){
+    var box = $("lessonCards");
+    box.innerHTML = "";
+    LESSONS.forEach(function(L){
+      var done = isLessonDone(L.id), p = PROG.lessons[L.id] || {};
+      var b = document.createElement("button");
+      b.className = "lesson-card" + (done ? " done" : "");
+      b.dataset.lesson = L.id;
+      b.setAttribute("aria-label", "Lesson " + L.num + ": " + L.title);
+      var state = done
+        ? "<div>" + starStr(p.stars || 1) + "</div><div>✓ Done</div>"
+        : '<div class="lc-play">▶</div><div>Learn</div>';
+      b.innerHTML = '<div class="lc-num">' + L.num + '</div>' +
+        '<div class="lc-main"><div class="lc-title">' + L.title + '</div>' +
+        '<div class="lc-sub">' + L.cardSub + '</div></div>' +
+        '<div class="lc-state">' + state + '</div>';
+      b.addEventListener("click", function(){ audio(); enterBook(L); });
+      box.appendChild(b);
+    });
+    var tc = $("tryitCard"), anyDone = anyLessonDone();
+    tc.classList.toggle("locked", !anyDone && !PROG.tryitDone);
+    tc.classList.toggle("done", !!PROG.tryitDone);
+    $("tryitSub").textContent = PROG.tryitDone
+      ? "You did it! Play it again any time!"
+      : (anyDone ? "Glitter germs — watch them travel!" : "Finish a lesson to unlock!");
+    $("tryitState").innerHTML = PROG.tryitDone
+      ? "<div>✓</div><div>Done</div>"
+      : (anyDone ? '<div class="lc-play">▶</div><div>Play</div>' : "🔒");
+    $("hubDoneNote").hidden = !chapterComplete();
+    $("chapterFinishBtn").hidden = !chapterComplete();
+    $("hubNote").textContent = chapterComplete()
+      ? "You finished the whole chapter, little scientist! 🏆"
+      : (anyDone ? "Great! Keep going — tap a lesson!" : "Tap a lesson and learn with Mia, step by step!");
+  }
+  function enterHub(){
+    stopSpeak();
+    try{ lectureVideo.pause(); }catch(e){}
+    try{ tryVideo.pause(); }catch(e){}
+    dockEl.style.display = "";
+    $("endOverlay").hidden = true;
+    mascotWrap.classList.remove("thinking");
+    renderHub();
+    showView("hub");
+    partLineEl.textContent = "Chapter 1 · Choose a Lesson";
+    clearPraise();
+    if(chapterComplete() && !PROG.chapterShown){
+      PROG.chapterShown = true;
+      saveProg();
+      showChapterFinish();
+    }
+  }
+  $("tryitCard").addEventListener("click", function(){
+    audio();
+    if(!anyLessonDone() && !PROG.tryitDone){
+      var tc = $("tryitCard");
+      tc.classList.remove("shake"); void tc.offsetWidth; tc.classList.add("shake");
+      buzz();
+      say("Finish a lesson first, little scientist! Then we will do the Glitter Germs Test together!", "gentle");
+      return;
+    }
+    enterTryit();
+  });
+  $("chapterFinishBtn").addEventListener("click", function(){
+    audio();
+    showChapterFinish();
+  });
 
   /* ================= STAGE 1 — YOUR BOOK PAGE =================
-     The page opens with Mia's greeting (the chapter game's own core
-     line). The start gate is the games' own: Mia speaks IN FULL first;
-     while she talks the button waits, and only then lights up. With
-     the voice OFF the gate releases at once; the speech watchdogs make
-     sure the button can never stay dead. */
+     The lesson opens with Mia's greeting. The start gate is the games'
+     own: Mia speaks IN FULL first; while she talks the button waits,
+     and only then lights up. With the voice OFF the gate releases at
+     once; the speech watchdogs make sure the button can never stay dead. */
   var introDone = false, introTalking = false, introArmed = false;
+  function enterBook(L){
+    CUR = L;
+    scoreAtLessonStart = score;
+    stopSpeak();
+    introDone = false; introTalking = false; introArmed = false;
+    /* rebuild this lesson's read + terms stages, clean slates */
+    buildReadText();
+    buildTermsText();
+    termsSeen = {}; termsCount = 0;
+    var chip = $("senseChip");
+    chip.classList.remove("got", "front");
+    if(L.chip){ chip.hidden = false; chip.innerHTML = L.chip.label; }
+    else { chip.hidden = true; }
+    $("termHint").hidden = false;
+    $("termBody").hidden = true;
+    toClassBtn.hidden = true;
+    toClassBtn.classList.remove("ready");
+    $("termsTitle").textContent = L.wordsTitle;
+    toTermsBtn.textContent = L.wordsBtn;
+    toTermsBtn.disabled = true;
+    toTermsBtn.classList.remove("ready");
+    /* the book page itself */
+    var img = $("bookPageImg");
+    img.src = L.pageImg;
+    img.alt = "Your book page: " + L.title + " — Lesson " + L.num + " of Chapter 1";
+    $("bookCap").innerHTML = "Chapter 1 · Lesson " + L.num + "<br>" + L.title;
+    $("doneNote").hidden = !isLessonDone(L.id);
+    startBtn.disabled = false;
+    startBtn.classList.remove("listening", "waiting", "ready");
+    startBtn.innerHTML = "▶ Start Learning";
+    try{ lectureVideo.pause(); }catch(e){}
+    dockEl.style.display = "";
+    $("endOverlay").hidden = true;
+    showView("book");
+    partLineEl.textContent = "Lesson " + L.num + " · Your Book Page";
+    clearPraise();
+    say("Hello! I am Mia!", "instruct");
+  }
+  $("backHubBtn").addEventListener("click", function(){
+    audio();
+    enterHub();
+  });
   startBtn.addEventListener("click", function(){
     audio();
     if(introDone) return;
@@ -1176,7 +1573,7 @@
     startBtn.disabled = true;
     startBtn.classList.add("waiting");
     startBtn.innerHTML = "👂 Listen to Mia…";
-    say(GREETING, "instruct");
+    say(CUR.greet, "instruct");
     whenSpeechDone(function(){
       introTalking = false;
       introArmed = true;
@@ -1188,7 +1585,7 @@
   });
 
   /* ================= STAGE 2 — READ WITH MIA =================
-     Mia reads the paragraph sentence by sentence, slowly and calmly
+     Mia reads the lesson sentence by sentence, slowly and calmly
      (story mood + a real breath between sentences — thehrao). The word
      being spoken lights up: utterance boundary events drive the
      highlight where the platform provides them; a pace timer (paced by
@@ -1200,7 +1597,7 @@
     var box = $("readText");
     box.innerHTML = "";
     SENTENCES = [];
-    PARAS.forEach(function(p){
+    CUR.paras.forEach(function(p){
       var pel = document.createElement("p");
       splitSentences(p).forEach(function(stext){
         var words = stext.split(/\s+/), spans = [], starts = [], acc = 0;
@@ -1304,14 +1701,14 @@
       toTermsBtn.disabled = false;
       toTermsBtn.classList.add("ready");
       praise("Great listening! ⭐");
-      say("Great listening! Now let's look at the special words in our paragraph!", "praise");
+      say("Great listening! Now let's look at the special words!", "praise");
     });
   }
   function enterRead(){
     showView("read");
-    partLineEl.textContent = "Step 2 · Read with Mia";
+    partLineEl.textContent = "Lesson " + CUR.num + " · Read with Mia";
     clearPraise();
-    say("Listen carefully! I will read our paragraph. Follow the words with your eyes!", "instruct");
+    say(CUR.readIntro, "instruct");
     afterMia(function(){ startReading(); }, 700);
   }
   $("againReadBtn").addEventListener("click", function(){
@@ -1325,8 +1722,8 @@
     afterMia(enterTerms, 300);
   });
 
-  /* ================= STAGE 3 — WORDS IN OUR PARAGRAPH =================
-     The paragraph comes back with its key terms shining. The child taps
+  /* ================= STAGE 3 — WORDS IN OUR TEXT =================
+     The text comes back with its key terms shining. The child taps
      any term, in any order: it comes to the FRONT on the term stage —
      big word, the book's own picture (a picture explains better than
      words for eyes/ears/nose), and Mia explains it calmly (teach mood).
@@ -1336,15 +1733,15 @@
   function buildTermsText(){
     var box = $("termsText");
     box.innerHTML = "";
-    var combined = new RegExp("(" + TERM_SPANS.map(function(s){
+    var combined = new RegExp("(" + CUR.termSpans.map(function(s){
       return s.re.source.replace(/\\b/g, "\\b");
     }).join("|") + ")", "gi");
     var idFor = function(word){
       var w = word.toLowerCase();
-      for(var i=0;i<TERM_SPANS.length;i++){ if(TERM_SPANS[i].re.test(w)) return TERM_SPANS[i].id; }
+      for(var i=0;i<CUR.termSpans.length;i++){ if(CUR.termSpans[i].re.test(w)) return CUR.termSpans[i].id; }
       return null;
     };
-    PARAS.forEach(function(p){
+    CUR.paras.forEach(function(p){
       var pel = document.createElement("p");
       var last = 0, m;
       combined.lastIndex = 0;
@@ -1367,20 +1764,20 @@
   }
   function enterTerms(){
     showView("terms");
-    partLineEl.textContent = "Step 3 · Words in Our Paragraph";
+    partLineEl.textContent = "Lesson " + CUR.num + " · " + CUR.wordsTitle.replace(/🔤/g, "").trim();
     clearPraise();
     pointMia();
-    say("Here is our paragraph again! Some words are shining. Tap a shining word, and I will explain it!", "instruct");
+    say(CUR.termsIntro, "instruct");
   }
   function openTerm(id, el){
     audio();
-    var T = TERMS[id];
+    var T = CUR.terms[id];
     if(!T) return;
     /* clear the previous front highlight, mark this one */
     var prev = termsView.querySelectorAll(".front");
     for(var i=0;i<prev.length;i++){ prev[i].classList.remove("front"); }
     if(el){ el.classList.add("front"); }
-    if(id === "senseorgans"){ $("senseChip").classList.add("front"); }
+    if(CUR.chip && id === CUR.chip.id){ $("senseChip").classList.add("front"); }
     /* build the front stage: big word + book picture + explanation */
     $("termHint").hidden = true;
     $("termBody").hidden = false;
@@ -1411,7 +1808,7 @@
       termsCount++;
       var spans = termsView.querySelectorAll('.tspan[data-term="' + id + '"]');
       for(var j=0;j<spans.length;j++){ spans[j].classList.add("got"); }
-      if(id === "senseorgans"){ $("senseChip").classList.add("got"); }
+      if(CUR.chip && id === CUR.chip.id){ $("senseChip").classList.add("got"); }
       buzz();
     }
     say(T.say, "teach");
@@ -1420,7 +1817,9 @@
       toClassBtn.classList.add("ready");
     }
   }
-  $("senseChip").addEventListener("click", function(){ openTerm("senseorgans", null); });
+  $("senseChip").addEventListener("click", function(){
+    if(CUR.chip){ openTerm(CUR.chip.id, null); }
+  });
   toClassBtn.addEventListener("click", function(){
     audio();
     toClassBtn.classList.remove("ready");
@@ -1428,59 +1827,106 @@
   });
 
   /* ================= STAGE 4 — MIA'S CLASSROOM =================
-     Mia teaches each key point as a real mini-lesson: a hook question,
-     a simple explanation, an example from the chapter's own text, and a
-     one-line recap — while the point's book-art film plays on half the
-     screen beside the whiteboard. The point is written on the board as
-     she begins it. Then the "we do" beat, and only then the quiz. */
-  var kpIdx = 0;
+     Mia introduces her LECTURE FILM — a narrated video built from the
+     book's own art that teaches this lesson — and the child watches it
+     on half the screen. The background music rests while the film
+     plays. Only when the film ENDS does the whiteboard recap begin:
+     the lesson's key points are written on the board one by one while
+     Mia reads them aloud, calmly (thehrao). Then the "we do" beat,
+     and only then the quiz. If the film cannot play at all, Mia simply
+     carries on to the recap — the lesson can never stall. */
+  var recapIdx = 0, recapStarted = false, wedoLock = false;
   function enterClass(){
     showView("class");
-    partLineEl.textContent = "Step 4 · Mia's Classroom";
+    partLineEl.textContent = "Lesson " + CUR.num + " · Mia's Classroom";
     clearPraise();
     $("boardPoints").innerHTML = "";
+    $("boardEmpty").hidden = false;
     $("wedoBox").hidden = true;
     $("wedoOpts").innerHTML = "";
     toQuizBtn.hidden = true;
     toQuizBtn.classList.remove("ready");
-    kpIdx = 0;
+    filmAgainBtn.hidden = true;
+    filmPlayBtn.hidden = true;
+    recapIdx = 0;
+    recapStarted = false;
     wedoLock = false;
-    say("Welcome to my classroom! I will teach you the key points!", "instruct");
-    afterMia(teachNext, 900);
+    try{ lectureVideo.pause(); }catch(e){}
+    say(CUR.classIntro, "instruct");
+    afterMia(startFilm, 900);
   }
-  function teachNext(){
-    if(kpIdx >= KEY_POINTS.length){ showWedo(); return; }
-    var kp = KEY_POINTS[kpIdx];
-    var div = document.createElement("div");
-    div.className = "kp";
-    if(kp.pics){
-      var pics = "";
-      for(var i=0;i<kp.pics.length;i++){ pics += '<img src="' + kp.pics[i] + '" alt="" draggable="false">'; }
-      div.innerHTML = '<div class="kp-pics">' + pics + '</div>' +
-        '<div><div class="kp-term">' + kp.term + '</div><div class="kp-jobs">' + kp.jobs + '</div></div>';
-    } else {
-      div.innerHTML = '<img src="' + kp.img + '" alt="" draggable="false">' +
-        '<div><div class="kp-term">' + kp.term + '</div><div class="kp-def">' + kp.def + '</div></div>';
-    }
-    $("boardPoints").appendChild(div);
-    /* the point's film starts on the footage half of the classroom */
+  function startFilm(){
+    stopMusic();  /* the film carries its own narration */
     try{
-      lectureVideo.src = kp.clip;
+      lectureVideo.src = CUR.video;
+      var pr = lectureVideo.play();
+      if(pr && pr.catch){ pr.catch(function(){ filmPlayBtn.hidden = false; }); }
+    }catch(e){ filmPlayBtn.hidden = false; }
+  }
+  function onFilmEnded(){
+    if(musicOn){ startMusic(); }
+    filmPlayBtn.hidden = true;
+    filmAgainBtn.hidden = false;
+    if(recapStarted) return;
+    recapStarted = true;
+    $("boardEmpty").hidden = true;
+    say("Great watching! Now let's remember the key points together!", "praise");
+    afterMia(recapNext, 800);
+  }
+  lectureVideo.addEventListener("ended", onFilmEnded);
+  lectureVideo.addEventListener("error", function(){
+    if(!classView.hidden && !recapStarted){ onFilmEnded(); }
+  });
+  filmPlayBtn.addEventListener("click", function(){
+    audio();
+    filmPlayBtn.hidden = true;
+    try{
+      var pr = lectureVideo.play();
+      if(pr && pr.catch){ pr.catch(function(){ filmPlayBtn.hidden = false; }); }
+    }catch(e){ filmPlayBtn.hidden = false; }
+  });
+  filmAgainBtn.addEventListener("click", function(){
+    audio();
+    stopMusic();
+    filmAgainBtn.hidden = true;
+    try{
+      lectureVideo.currentTime = 0;
       var pr = lectureVideo.play();
       if(pr && pr.catch){ pr.catch(function(){}); }
     }catch(e){}
+  });
+  function recapNext(){
+    if(recapIdx >= CUR.recap.length){ showWedo(); return; }
+    var kp = CUR.recap[recapIdx];
+    var div = document.createElement("div");
+    div.className = "kp";
+    var left = "";
+    if(kp.pics){
+      left = '<div class="kp-pics">' + kp.pics.map(function(s){
+        return '<img src="' + s + '" alt="" draggable="false">';
+      }).join("") + '</div>';
+    } else if(kp.img){
+      left = '<img src="' + kp.img + '" alt="" draggable="false">';
+    }
+    div.innerHTML = left +
+      '<div><div class="kp-term">' + kp.term + '</div>' +
+      (kp.jobs
+        ? '<div class="kp-jobs">' + kp.jobs + '</div>'
+        : '<div class="kp-def">' + kp.def + '</div>') +
+      '</div>';
+    $("boardPoints").appendChild(div);
     pointMia();
-    kp.lines.forEach(function(L){ say(L.t, L.m); });
-    kpIdx++;
-    afterMia(teachNext, 1500);
+    say(kp.say, "teach");
+    recapIdx++;
+    afterMia(recapNext, 1200);
   }
-  var wedoLock = false;
   function showWedo(){
+    var W = CUR.wedo;
     $("wedoBox").hidden = false;
-    $("wedoQ").textContent = WEDO.q;
+    $("wedoQ").textContent = W.q;
     var box = $("wedoOpts");
     box.innerHTML = "";
-    shuffle(WEDO.opts.slice()).forEach(function(o, k){
+    shuffle(W.opts.slice()).forEach(function(o, k){
       var b = document.createElement("button");
       b.className = "opt";
       b.dataset.tint = "abc"[k % 3];
@@ -1492,12 +1938,12 @@
       box.appendChild(b);
     });
     mascotWrap.classList.add("thinking");
-    say(WEDO.q, "ask");
+    say(W.q, "ask");
   }
   function onWedoAnswer(o, btn){
     if(wedoLock) return;
     audio();
-    if(o.id === WEDO.ans){
+    if(o.id === CUR.wedo.ans){
       wedoLock = true;
       mascotWrap.classList.remove("thinking");
       btn.classList.add("right");
@@ -1528,24 +1974,22 @@
     audio();
     try{ lectureVideo.pause(); }catch(e){}
     quizIdx = 0; quizPoints = 0;
-    splash("Quiz Time!", "Mia asks questions about our paragraph!", "Step 5 · Quiz Time", showQuizQ);
+    splash("Quiz Time!", "Mia asks questions about our lesson!", "Lesson " + CUR.num + " · Quiz Time", showQuizQ);
   });
 
-  /* ================= STAGE 5 — QUIZ FROM THE PARAGRAPH =================
+  /* ================= STAGE 5 — QUIZ FROM THE LESSON =================
      One question at a time. EVERY answer gets its own spoken feedback
-     from the paragraph. A wrong first try earns one kind retry (half a
+     from the lesson. A wrong first try earns one kind retry (half a
      point if it lands); a second miss and Mia teaches the answer — the
-     lesson never fails the child. */
+     lesson never fails the child. Finishing the quiz completes the
+     lesson: its stars are saved and the child returns to the hub. */
   var quizIdx = 0, quizPoints = 0, quizTried = false, quizLock = false, quizBtns = {};
   function showQuizQ(){
     clearPraise();
-    if(quizIdx >= QUIZ.length){
-      splash("Try This!", "Now let's do the Glitter Germs Test!", "Step 6 · Try This!", enterTryit);
-      return;
-    }
-    var q = QUIZ[quizIdx];
+    if(quizIdx >= CUR.quiz.length){ lessonDone(); return; }
+    var q = CUR.quiz[quizIdx];
     quizTried = false; quizLock = false; quizBtns = {};
-    partLineEl.textContent = "Step 5 · Quiz Time · Question " + (quizIdx + 1) + " of " + QUIZ.length;
+    partLineEl.textContent = "Lesson " + CUR.num + " · Quiz Time · Question " + (quizIdx + 1) + " of " + CUR.quiz.length;
     showView("quiz");
     var box = $("opts");
     box.innerHTML = "";
@@ -1607,19 +2051,31 @@
       setTimeout(function(){ btn.classList.remove("wrong"); }, 500);
     }
   }
+  function lessonDone(){
+    mascotWrap.classList.remove("thinking");
+    var ratio = CUR.quiz.length ? (quizPoints / CUR.quiz.length) : 0;
+    var stars = ratio >= 0.85 ? 3 : (ratio >= 0.5 ? 2 : 1);
+    PROG.lessons[CUR.id] = { done:true, stars:stars, points:(score - scoreAtLessonStart) };
+    saveProg();
+    splash("Lesson Complete! 🎉",
+      "You earned " + stars + (stars === 1 ? " star!" : " stars!"),
+      "Lesson " + CUR.num + " · Complete ✓",
+      enterHub);
+  }
 
   /* ================= STAGE 6 — TRY THIS! STEP BY STEP =================
      The book's own Glitter Germs Test as a guided stage: one step at a
      time. The step's little film (book art, crafted) plays on half the
      screen while Mia reads the step aloud, calmly, in full — the Next
      button only wakes when she has finished (Speech-Gate). Back is
-     always allowed. After the last step, her closing line, then the
-     finish screen. */
+     always allowed. After the last step, her closing line, then back
+     to the hub — or the chapter finish, if this was the last piece. */
   var tryIdx = 0, tryToken = 0;
   function enterTryit(){
     showView("try");
-    partLineEl.textContent = "Step 6 · Try This!";
+    partLineEl.textContent = "Chapter 1 · Try This!";
     clearPraise();
+    dockEl.style.display = "";
     tryIdx = 0;
     say("Try This! The Glitter Germs Test!", "instruct");
     say(TRYIT.intro, "teach");
@@ -1671,11 +2127,22 @@
       btn.disabled = true;
       try{ tryVideo.pause(); }catch(e){}
       say(TRYIT.closing, "praise");
-      afterMia(finishAll, 1400);
+      afterMia(tryitDone, 1400);
     }
   });
+  function tryitDone(){
+    PROG.tryitDone = true;
+    saveProg();
+    if(chapterComplete()){
+      splash("Chapter Complete! 🎉", "You did every lesson AND the Glitter Germs Test!",
+        "Chapter 1 · Complete", enterHub);
+    } else {
+      splash("Try This — Done! 🎉", "You did the Glitter Germs Test!",
+        "Chapter 1 · Try This! ✓", enterHub);
+    }
+  }
 
-  /* ================= STAGE 7 — FINISH ================= */
+  /* ================= CHAPTER FINISH ================= */
   function starRain(){
     var colours = ["#FFC93C","#7ED957","#0E7C86","#5BB8E8","#C39BD3"];
     var i, el;
@@ -1703,84 +2170,60 @@
       (function(e2){ setTimeout(function(){ e2.remove(); }, 6500); })(el);
     }
   }
-  function finishAll(){
+  function showChapterFinish(){
+    stopSpeak();
     clearPraise();
-    partLineEl.textContent = "All done! 🎉";
+    partLineEl.textContent = "Chapter 1 · Complete! 🎉";
     showView("none");
     dockEl.style.display = "none";
-    var ratio = QUIZ.length ? (quizPoints / QUIZ.length) : 0;
-    var stars = ratio >= 0.85 ? 3 : (ratio >= 0.5 ? 2 : 1);
+    var total = 0;
+    LESSONS.forEach(function(L){
+      var p = PROG.lessons[L.id];
+      if(p && p.done){ total += (p.stars || 0); }
+    });
+    var rating = total >= 8 ? 3 : (total >= 5 ? 2 : 1);
+    $("finGameName").textContent = "🏆 Chapter 1 Complete!";
+    $("finH1").innerHTML = "You finished<br>Chapter 1!";
     var row = $("starsRow");
     row.innerHTML = STAR_BIG + STAR_BIG + STAR_BIG;
     var starEls = row.querySelectorAll(".fin-star");
-    for(var i=0;i<stars;i++){ starEls[i].classList.add("lit"); }
+    for(var i=0;i<rating;i++){ starEls[i].classList.add("lit"); }
+    $("finPill").textContent = "🌟 No Teacher Needed! 🌟";
     var chips = $("recapChips");
     chips.innerHTML = "";
-    KEY_POINTS.forEach(function(kp){
+    LESSONS.forEach(function(L){
+      var p = PROG.lessons[L.id] || {};
       var c = document.createElement("span");
       c.className = "chip";
-      c.innerHTML = kp.def
-        ? "<b>" + kp.term + "</b> — " + kp.def
-        : "<b>" + kp.term + "</b> — see · hear · smell";
+      c.innerHTML = "<b>Lesson " + L.num + "</b> · " + L.title + " ✓ " + starStr(p.stars || 0);
       chips.appendChild(c);
     });
+    var tc = document.createElement("span");
+    tc.className = "chip";
+    tc.innerHTML = "<b>Try This!</b> · The Glitter Germs Test ✓";
+    chips.appendChild(tc);
+    $("againBtn").textContent = "🏠 Back to Lessons";
     $("endOverlay").hidden = false;
     chimeWin();
     starRain();
-    try{
-      localStorage.setItem("learn-g2c1-v2", JSON.stringify({stars:stars, points:score, when:Date.now()}));
-    }catch(e){}
-    speak("Well done, little scientist! You read with Mia, learned the key points, and answered the quiz! You earned " +
-      stars + (stars === 1 ? " star!" : " stars!"), "praise");
+    speak("Hooray! You finished Chapter 1 — My Busy Body! You learned all three lessons and did the Glitter Germs Test. No teacher needed — you learned it all with Mia!", "praise");
   }
   $("gameBtn").addEventListener("click", function(){
     window.location.href = "c1.html";
   });
   $("againBtn").addEventListener("click", function(){
     audio();
-    resetAll();
-  });
-  function resetAll(){
-    stopSpeak();
-    introDone = false; introTalking = false; introArmed = false;
-    score = 0; updateScore(false);
-    quizIdx = 0; quizPoints = 0; kpIdx = 0; reading = false;
-    /* terms stage back to a clean slate */
-    termsSeen = {}; termsCount = 0;
-    buildTermsText();
-    $("senseChip").classList.remove("got", "front");
-    $("termHint").hidden = false;
-    $("termBody").hidden = true;
-    toClassBtn.hidden = true;
-    toClassBtn.classList.remove("ready");
-    /* films stop */
-    try{ lectureVideo.pause(); }catch(e){}
-    try{ tryVideo.pause(); }catch(e){}
-    tryIdx = 0; tryToken++;
-    dockEl.style.display = "";
     $("endOverlay").hidden = true;
-    startBtn.disabled = false;
-    startBtn.classList.remove("listening", "waiting", "ready");
-    startBtn.innerHTML = "▶ Start Learning";
-    toTermsBtn.disabled = true;
-    toTermsBtn.classList.remove("ready");
-    mascotWrap.classList.remove("thinking");
-    clearPraise();
-    partLineEl.textContent = "Step 1 · Your Book Page";
-    showView("book");
-    say("Hello! I am Mia!", "instruct");
-  }
+    enterHub();
+  });
 
   /* ================= start ================= */
-  buildReadText();
-  buildTermsText();
+  loadProg();
+  score = PROG.totalScore || 0;
   updateScore(false);
-  showView("book");
-  try{
-    var saved = localStorage.getItem("learn-g2c1-v2") || localStorage.getItem("learn-g2c1");
-    if(saved){ $("doneNote").hidden = false; }
-  }catch(e){}
-  say("Hello! I am Mia!", "instruct");
+  renderHub();
+  showView("hub");
+  say(LESSONS[0].greet, "instruct");
 })();
 </script>
 </body>
