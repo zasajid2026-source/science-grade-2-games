@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Mia's Heat & Sound Lab · Chapter 7 · Science Grade 2</title>
+<link rel="icon" href="data:,">
+<style>
+  :root{
+    --col:#6D3FA0; --deep:#52297E; --tint:#F1EAF9; --bord:#B893DC; --soft:#DFCFF5;
+    --cream:#FFF7E0; --amber:#E8A020;
+    --sky:var(--tint); --ink:#1F2430; --teal:var(--col); --teal-dark:var(--deep);
+    --gold:var(--amber); --green:#3E9B4F; --green-dark:#2F7D3E;
+    --card-shadow:0 10px 24px rgba(31,36,48,.15);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  [hidden]{display:none !important;}
+  html,body{height:100%;}
+  body{
+    font-family:"Comic Neue","Baloo 2","Comic Sans MS","Chalkboard SE","Segoe UI Rounded",ui-rounded,system-ui,sans-serif;
+    background:linear-gradient(180deg,var(--tint) 0%,var(--soft) 100%);
+    color:var(--ink); touch-action:manipulation; overflow-x:hidden;
+    display:flex; flex-direction:column; align-items:center; min-height:100dvh;
+  }
+  body::before, body::after{
+    content:""; position:fixed; left:0; right:0; height:14px; z-index:5; pointer-events:none;
+    background-image:
+      radial-gradient(circle at 10px 7px, var(--col) 4.5px, transparent 5px),
+      radial-gradient(circle at 34px 7px, var(--amber) 4.5px, transparent 5px),
+      radial-gradient(circle at 58px 7px, var(--deep) 4.5px, transparent 5px);
+    background-size:72px 14px; background-repeat:repeat-x;
+  }
+  body::before{top:0;} body::after{bottom:0;}
+  .bg-hills,.bg-grass{position:fixed; left:-6%; width:112%; z-index:-2; pointer-events:none;}
+  .bg-hills{bottom:5vh; height:30vh; opacity:.5; animation:drift1 26s ease-in-out infinite alternate;}
+  .bg-grass{bottom:-4px; height:13vh; z-index:-1; opacity:.75; animation:drift2 19s ease-in-out infinite alternate;}
+  @keyframes drift1{from{transform:translateX(-10px)}to{transform:translateX(12px)}}
+  @keyframes drift2{from{transform:translateX(12px)}to{transform:translateX(-12px)}}
+  .petal{position:fixed; top:-4vh; z-index:-1; pointer-events:none; border-radius:62% 38% 62% 38%; opacity:.8; animation:petalfall linear infinite;}
+  @keyframes petalfall{0%{transform:translate(0,-4vh) rotate(0deg);}100%{transform:translate(7vw,108vh) rotate(320deg);}}
+  .topbar{width:100%; max-width:560px; display:flex; align-items:center; justify-content:space-between; padding:16px 14px 4px; gap:8px;}
+  .home-btn{text-decoration:none; background:#fff; color:var(--deep); font-weight:800; font-size:16px; border:3px solid var(--bord); border-radius:999px; padding:9px 15px; box-shadow:0 3px 0 var(--bord); min-height:46px; display:flex; align-items:center;}
+  .home-btn:active{transform:translateY(2px); box-shadow:none;}
+  .unit-chip{background:var(--tint); color:var(--deep); font-weight:800; font-size:14px; border-radius:999px; padding:8px 12px; text-align:center; line-height:1.15;}
+  .scorebox{display:flex; align-items:center; gap:5px; background:#fff; border:3px solid #FFE1A1; border-radius:999px; padding:6px 13px 6px 9px; font-size:18px; font-weight:800; color:#B97A0B; box-shadow:0 3px 0 #FFE1A1; min-width:104px; justify-content:center;}
+  .scorebox svg{width:24px;height:24px;flex:none;}
+  .scorebox.bump{animation:bump .45s ease;}
+  @keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.18) rotate(-3deg)}100%{transform:scale(1)}}
+  .toggles{width:100%; max-width:560px; display:flex; gap:8px; justify-content:flex-end; padding:6px 14px 0;}
+  .tgl{border:3px solid var(--soft); background:#fff; border-radius:999px; padding:5px 13px; cursor:pointer; font-family:inherit; font-weight:800; font-size:14px; color:var(--ink); box-shadow:0 3px 0 var(--soft); transition:transform .12s, box-shadow .12s, opacity .2s; min-height:44px;}
+  .tgl:active{transform:translateY(2px); box-shadow:none;}
+  .tgl.off{opacity:.5; filter:grayscale(.8);}
+  .partline{margin-top:8px; background:#fff; border:3px solid var(--bord); color:var(--deep); font-weight:800; font-size:15px; border-radius:999px; padding:6px 16px; box-shadow:0 3px 0 var(--bord);}
+  .dock{position:relative; width:100%; max-width:560px; display:flex; align-items:flex-end; gap:4px; padding:4px 14px 0; cursor:pointer;}
+  .mascot{width:80px; height:80px; flex:none; object-fit:cover; border-radius:50%; border:4px solid var(--gold); background:#fff; transform-origin:50% 100%; pointer-events:none; animation:breathe 3.2s ease-in-out infinite; filter:drop-shadow(0 6px 6px rgba(31,36,48,.22));}
+  @keyframes breathe{0%,100%{transform:translateY(0) scale(1,1)}50%{transform:translateY(-3px) scale(1.015,.99)}}
+  .mascot.cheer{animation:cheer .62s ease 2;}
+  @keyframes cheer{0%{transform:translateY(0)}35%{transform:translateY(-18px) rotate(-3deg) scale(1.05)}70%{transform:translateY(0) rotate(2deg)}100%{transform:translateY(0)}}
+  .mascot.encourage{animation:encourage .7s ease;}
+  @keyframes encourage{0%{transform:rotate(0)}30%{transform:rotate(-5deg) translateY(-2px)}65%{transform:rotate(4deg)}100%{transform:rotate(0)}}
+  .mascot-wrap{position:relative; width:80px; height:80px; flex:none;}
+  .dock .mascot{width:100%; height:100%;}
+  @media (max-height:660px){ .dock .mascot-wrap{width:64px; height:64px;} }
+  .mouth{position:absolute; left:49%; top:66%; width:10%; height:8%; background:#4A2C20; border-radius:50%; opacity:0; pointer-events:none; transform:scaleY(.18); transform-origin:center; transition:opacity .15s;}
+  .mouth::after{content:""; position:absolute; left:20%; right:20%; bottom:6%; height:38%; background:#E88CA0; border-radius:50%;}
+  .mascot-wrap.speaking .mouth{opacity:1; animation:mouthTalk .32s ease-in-out infinite alternate;}
+  @keyframes mouthTalk{from{transform:scaleY(.18)} to{transform:scaleY(1)}}
+  .mascot-wrap[data-emotion="praise"] .mouth{width:13%; left:47.5%;}
+  .mascot-wrap[data-emotion="retry"] .mouth{animation-duration:.52s;}
+  .mascot-wrap[data-emotion="story"] .mouth{animation-duration:.42s;}
+  .mascot-wrap.speaking{filter:drop-shadow(0 0 9px rgba(245,166,35,.55));}
+  .mascot-wrap.pulse .mascot{animation:miapulse .26s ease;}
+  @keyframes miapulse{40%{transform:scale(1.07) translateY(-2px)}}
+  .mascot-wrap.pointing .mascot{animation:pointlean 1s ease-in-out infinite;}
+  @keyframes pointlean{0%,100%{transform:translateX(0) rotate(0)}50%{transform:translateX(4px) rotate(2.5deg)}}
+  .thumb-pop{position:absolute; right:-18px; top:-16px; font-size:34px; z-index:3; opacity:0; pointer-events:none;}
+  .thumb-pop.pop{animation:thumbpop .9s ease;}
+  @keyframes thumbpop{0%{opacity:0; transform:scale(.3) rotate(-14deg)}30%{opacity:1; transform:scale(1.25) rotate(4deg)}70%{opacity:1} 100%{opacity:0; transform:scale(1) translateY(-8px)}}
+  .bubble{flex:1; position:relative; margin:0 0 12px 6px; background:var(--tint); border:3px solid var(--bord); color:var(--deep); font-size:clamp(21px,6vw,27px); font-weight:800; text-align:center; border-radius:22px; padding:12px 16px; line-height:1.28; box-shadow:0 4px 10px rgba(31,36,48,.12);}
+  .bubble::before{content:""; position:absolute; left:-13px; bottom:14px; width:20px; height:20px; background:var(--tint); border-left:3px solid var(--bord); border-bottom:3px solid var(--bord); transform:rotate(45deg); border-bottom-left-radius:6px;}
+  .praise{min-height:34px; text-align:center; font-size:clamp(20px,5.6vw,26px); font-weight:800; color:var(--deep); padding:2px 10px 0; opacity:0; transform:scale(.8); transition:all .25s;}
+  .praise.show{opacity:1; transform:scale(1);}
+  #titleView{width:100%; display:flex; flex-direction:column; align-items:center;}
+  .story-wrap{width:100%; max-width:560px; display:flex; gap:10px; align-items:flex-start; padding:8px 12px 0;}
+  .story-mia{width:92px; flex:none; border-radius:20px; border:4px solid #fff; background:#FFF7E0; box-shadow:var(--card-shadow); display:block; transform-origin:50% 100%;}
+  .story-card{flex:1; min-width:0; background:var(--tint); border:4px solid var(--teal); border-radius:26px; padding:16px 16px 14px; box-shadow:var(--card-shadow); text-align:center;}
+  .own-badge{display:inline-block; background:var(--amber); color:#5C3A00; font-weight:800; font-size:14px; letter-spacing:1.2px; border-radius:999px; padding:7px 18px; box-shadow:0 3px 0 #B97A0B; margin-bottom:10px;}
+  .story-title{font-size:clamp(26px,7vw,34px); font-weight:800; color:var(--deep); text-align:center; line-height:1.15; margin-bottom:8px;}
+  .story-sub{font-size:clamp(20px,5.6vw,24px); font-weight:800; color:#B97A0B; text-align:center; margin-bottom:8px;}
+  .intro-text{font-size:clamp(18px,5.2vw,22px); font-weight:700; text-align:center; color:#1F2430; line-height:1.35;}
+  .play-btn{margin:14px auto 6px; background:var(--teal); color:#fff; border:none; cursor:pointer; font-family:inherit; font-size:clamp(23px,6.2vw,28px); font-weight:800; border-radius:999px; padding:16px 38px; min-height:68px; box-shadow:0 7px 0 var(--teal-dark); transition:transform .12s, box-shadow .12s, opacity .2s; animation:playglow 1.6s ease-in-out infinite;}
+  @keyframes playglow{0%,100%{box-shadow:0 7px 0 var(--teal-dark), 0 0 0 0 rgba(246,184,28,0);}50%{box-shadow:0 7px 0 var(--teal-dark), 0 0 0 13px rgba(246,184,28,.38);}}
+  .play-btn:active{transform:translateY(5px); box-shadow:0 2px 0 var(--teal-dark);}
+  .play-btn.waiting{animation:none; opacity:.55; filter:saturate(.55);}
+  .play-btn:disabled{cursor:default;}
+  .station-map{width:100%; max-width:560px; display:flex; gap:8px; justify-content:center; flex-wrap:wrap; padding:10px 12px 0;}
+  .st-chip{background:#fff; border:3px solid var(--soft); color:var(--deep); font-weight:800; font-size:16px; border-radius:999px; padding:8px 15px; box-shadow:0 3px 0 var(--soft);}
+  .st-chip.now{border-color:var(--teal); background:var(--tint);}
+  .st-chip.done{border-color:var(--green); background:#EAF7EE; color:var(--green-dark); box-shadow:0 3px 0 var(--green-dark);}
+  .lab-view{width:100%; display:flex; flex-direction:column; align-items:center;}
+  .lab-card{position:relative; width:calc(100% - 24px); max-width:536px; margin:8px auto 4px; background:#fff; border:4px solid var(--teal); border-radius:24px; padding:16px 12px 18px; box-shadow:var(--card-shadow); text-align:center;}
+  .station-head{font-size:clamp(23px,6.4vw,29px); font-weight:800; color:var(--deep); line-height:1.2; margin-bottom:4px;}
+  .scene{width:100%; max-width:440px; margin:2px auto 0; position:relative;}
+  .scene svg{width:100%; height:auto; display:block;}
+  .scene-cap{font-size:18px; font-weight:800; color:#A07B4F; margin-top:4px; line-height:1.3;}
+  .act-row{display:flex; flex-direction:column; align-items:center; margin-top:8px;}
+  .act-btn{background:var(--teal); color:#fff; border:none; cursor:pointer; font-family:inherit; font-size:clamp(22px,6vw,26px); font-weight:800; border-radius:999px; padding:16px 36px; min-height:70px; box-shadow:0 7px 0 var(--teal-dark); transition:transform .12s, box-shadow .12s, opacity .2s;}
+  .act-btn:active{transform:translateY(5px); box-shadow:0 2px 0 var(--teal-dark);}
+  .act-btn.waiting{opacity:.55; filter:saturate(.55);}
+  .act-btn:disabled{cursor:default; opacity:.55;}
+  .next-row{display:flex; justify-content:center; margin-top:14px;}
+  .burst-star{position:absolute; pointer-events:none; z-index:6; animation:burst .85s ease-out forwards;}
+  @keyframes burst{0%{transform:translate(0,0) scale(.4) rotate(0deg); opacity:1;}100%{transform:translate(var(--dx),var(--dy)) scale(1.15) rotate(160deg); opacity:0;}}
+  .big-row{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:12px;}
+  .big-choice{flex:1; min-width:140px; min-height:80px; border-radius:20px; border:4px solid var(--bord); background:var(--tint); color:var(--deep); font-family:inherit; font-size:21px; font-weight:800; padding:12px 8px; cursor:pointer; box-shadow:0 5px 0 var(--bord); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;}
+  .big-choice svg{width:62px; height:50px; pointer-events:none;}
+  .big-choice:active{transform:translateY(3px); box-shadow:none;}
+  .big-choice.wrong{animation:wobble .45s ease;}
+  .big-choice.right{background:#BDEBC4; border-color:var(--green); box-shadow:0 5px 0 var(--green-dark);}
+  .big-choice:disabled{opacity:.55; cursor:default;}
+  @keyframes wobble{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}45%{transform:translateX(6px)}70%{transform:translateX(-4px)}90%{transform:translateX(2px)}}
+  @keyframes rightpop{0%{transform:scale(1)}40%{transform:scale(1.1) rotate(-2deg)}100%{transform:scale(1)}}
+  .step-btn{min-height:70px; min-width:130px; border-radius:18px; border:4px solid var(--soft); background:#FFFDF6; font-family:inherit; font-size:21px; font-weight:800; color:var(--ink); padding:10px 16px; cursor:pointer; box-shadow:0 5px 0 var(--soft);}
+  .step-btn:disabled{opacity:.45; cursor:default;}
+  .step-btn.done{background:#EAF7EE; border-color:var(--green); box-shadow:0 5px 0 var(--green-dark);}
+  .count-line{font-size:19px; font-weight:800; color:var(--deep); margin-top:8px;}
+  .habit-pic{width:100%; max-width:300px; margin:6px auto 0;}
+  .habit-pic svg{width:100%; height:auto; display:block;}
+  .habit-label{font-size:22px; font-weight:800; color:var(--deep); margin-top:6px; line-height:1.3;}
+  .cycle-cards{display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:12px;}
+  .cycle-card{min-height:110px; border-radius:18px; border:4px solid var(--soft); background:#fff; font-family:inherit; cursor:pointer; padding:8px 6px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; box-shadow:0 4px 0 var(--soft);}
+  .cycle-card svg{width:70px; height:56px; pointer-events:none;}
+  .cycle-card span{font-size:19px; font-weight:800; color:var(--ink); line-height:1.1;}
+  .cycle-card.wrong{animation:wobble .45s ease;}
+  .cycle-card.used{visibility:hidden;}
+  .hot{position:absolute; background:transparent; border:none; cursor:pointer; min-width:64px; min-height:64px; border-radius:50%;}
+  .hot:focus-visible{outline:4px solid var(--amber); outline-offset:2px;}
+  .hot.done{pointer-events:none;}
+  .overlay{position:fixed; inset:0; z-index:20; display:flex; flex-direction:column; align-items:center; justify-content:center; background:linear-gradient(180deg,var(--tint) 0%,var(--soft) 100%); padding:24px 18px; text-align:center; overflow-y:auto;}
+  .overlay[hidden]{display:none;}
+  .overlay h1{font-size:clamp(28px,7.6vw,40px); font-weight:800; line-height:1.15; color:var(--deep);}
+  .overlay p{font-size:17px; font-weight:700; color:#7A97A5; margin-top:10px; max-width:420px; line-height:1.45;}
+  .overlay .game-name{background:#fff; border:3px solid #FFE1A1; color:#B97A0B; border-radius:999px; font-weight:800; font-size:18px; padding:7px 18px; margin-bottom:14px; box-shadow:0 3px 0 #FFE1A1;}
+  .big-btn{margin-top:20px; background:var(--teal); color:#fff; border:none; cursor:pointer; font-family:inherit; font-size:27px; font-weight:800; border-radius:999px; padding:16px 44px; min-height:68px; box-shadow:0 7px 0 var(--teal-dark); transition:transform .12s, box-shadow .12s;}
+  .big-btn:active{transform:translateY(5px); box-shadow:0 2px 0 var(--teal-dark);}
+  .mascot-dance{width:118px; height:118px; object-fit:cover; border-radius:50%; border:5px solid var(--gold); margin-top:8px; transform-origin:50% 100%; animation:dance .8s ease-in-out infinite; filter:drop-shadow(0 7px 7px rgba(31,36,48,.25));}
+  @keyframes dance{0%,100%{transform:rotate(-4deg) translateY(0)}50%{transform:rotate(4deg) translateY(-11px) scale(1.03)}}
+  .moral-pill{background:var(--teal); color:#fff; border-radius:999px; padding:10px 22px; font-weight:800; font-size:18.5px; margin-top:12px; box-shadow:0 4px 0 var(--teal-dark); line-height:1.25; display:inline-block;}
+  .big-score{font-size:clamp(31px,8.6vw,45px); font-weight:800; color:#B97A0B; margin-top:10px; line-height:1.1;}
+  .fall-star{position:fixed; top:-46px; z-index:30; pointer-events:none; animation:fall linear forwards;}
+  @keyframes fall{to{transform:translateY(108dvh) rotate(320deg);}}
+  .confetti{position:fixed; top:-22px; z-index:30; pointer-events:none; border-radius:2px; animation:confall linear forwards;}
+  @keyframes confall{to{transform:translateY(108dvh) rotate(560deg);}}
+  .credit{font-size:12.5px; font-weight:700; color:#6E97A0; padding:0 10px 16px; text-align:center; margin-top:auto;}
+  @media (max-width:400px){ .story-mia{width:76px;} }
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.01s !important; transition-duration:.01s !important;} }
+</style>
+</head>
+<body>
+  <svg class="bg-hills" viewBox="0 0 1440 320" preserveAspectRatio="none" aria-hidden="true"><path d="M0,190 C240,110 420,240 720,190 C1020,140 1200,230 1440,170 L1440,320 L0,320 Z" fill="#F1EAF9"/><path d="M0,250 C260,190 520,290 820,250 C1100,215 1280,280 1440,240 L1440,320 L0,320 Z" fill="#DFCFF5" opacity=".7"/></svg>
+  <svg class="bg-grass" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0,70 C200,40 380,95 620,70 C860,45 1100,90 1440,60 L1440,120 L0,120 Z" fill="#B893DC"/></svg>
+  <div id="petals" aria-hidden="true"></div>
+
+  <div class="topbar">
+    <a class="home-btn" href="c7.html">&#8592; Ch 7 Game</a>
+    <div class="unit-chip">Chapter 7 &middot; Heat, Light and Sound</div>
+    <div class="scorebox" id="scoreBox" aria-label="Stars you earned">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 6 L63 37 L96 39 L70 60 L79 93 L50 74 L21 93 L30 60 L4 39 L37 37 Z" fill="#FFC93C" stroke="#E8A20C" stroke-width="5" stroke-linejoin="round"/></svg>
+      <span>Stars: <span id="scoreCount">0</span>/2</span>
+    </div>
+  </div>
+
+  <div class="toggles">
+    <button class="tgl" id="musicBtn" aria-pressed="true">🎵 Music</button>
+    <button class="tgl" id="voiceBtn" aria-pressed="true">🗣️ Voice</button>
+  </div>
+
+  <div class="partline" id="partLine">Part 3 · How Things Work</div>
+
+  <div class="station-map" id="stationMap">
+    <span class="st-chip" id="chip1">☆ 1 · Heat Climbs Up</span>
+    <span class="st-chip" id="chip2">☆ 2 · Loud or Soft?</span>
+  </div>
+
+  <div class="dock" id="dock" role="button" aria-label="Mia. Tap to hear her again.">
+    <div class="mascot-wrap" id="mascotWrap">
+      <img class="mascot" id="mascot" src="img/mia-face.jpg" alt="Mia, your science friend, smiling at you">
+      <div class="mouth" id="mouth" aria-hidden="true"></div>
+      <div class="thumb-pop" id="thumbPop" aria-hidden="true">👍</div>
+    </div>
+    <div class="bubble" id="speech">Hello! I am Mia!</div>
+  </div>
+
+  <div class="praise" id="praise" aria-live="polite"></div>
+
+  <div id="titleView">
+    <div class="story-wrap">
+      <img class="story-mia" id="storyMia" src="img/mia-stage.jpg" alt="Mia waving hello" draggable="false">
+      <div class="story-card">
+        <div class="own-badge">🧪 OUR OWN VIRTUAL LAB</div>
+        <div class="story-title">Mia's Heat &amp; Sound Lab</div>
+        <div class="story-sub">⭐ Feel the Heat, Hear the Sound! ⭐</div>
+        <p class="intro-text">Watch heat climb up a spoon, then tap — is it loud or soft?</p>
+      </div>
+    </div>
+    <button class="play-btn" id="startBtn">▶ Start the Lab</button>
+  </div>
+
+  <div id="station1View" class="lab-view" hidden>
+    <div class="lab-card" id="card1">
+      <div class="station-head">Station 1 · Heat Climbs Up</div>
+      <div class="scene">
+        <svg viewBox="0 0 360 250" role="img" aria-label="A metal spoon standing in a cup of hot water">
+          <g transform="rotate(24 236 120)">
+            <rect class="spoon-seg" id="seg3" x="224" y="18" width="24" height="52" rx="12" fill="#C9CFD4"/>
+            <rect class="spoon-seg" id="seg2" x="224" y="66" width="24" height="52" rx="10" fill="#C9CFD4"/>
+            <rect class="spoon-seg" id="seg1" x="224" y="114" width="24" height="52" rx="10" fill="#C9CFD4"/>
+            <ellipse cx="236" cy="186" rx="17" ry="24" fill="#C9CFD4"/>
+          </g>
+          <path d="M92,150 L196,150 L186,228 L102,228 Z" fill="#E2483D" stroke="#B02A20" stroke-width="3.5"/>
+          <path d="M98,168 L190,168 L184,222 L104,222 Z" fill="#7FB5E8"/>
+          <path d="M196,168 q30,4 24,24 q-4,16 -28,14" fill="none" stroke="#B02A20" stroke-width="6"/>
+          <g id="steamG" stroke="#BFD9E2" stroke-width="5" fill="none" stroke-linecap="round" style="opacity:.3;transition:opacity .6s">
+            <path d="M116,138 q6,-12 0,-24 M144,140 q6,-12 0,-24 M170,138 q6,-12 0,-24"/>
+          </g>
+          <g id="flameG" style="opacity:0;transition:opacity .4s">
+            <path d="M144,246 q-14,-20 0,-36 q14,16 0,36 Z" fill="#F59E0B"/>
+            <path d="M144,244 q-7,-10 0,-20 q7,10 0,20 Z" fill="#FFD93B"/>
+          </g>
+        </svg>
+      </div>
+      <div class="scene-cap" id="s1Cap">A spoon in hot water. Heat it and watch!</div>
+      <div class="act-row">
+        <button class="act-btn" id="heatBtn">🔥 Heat the Water</button>
+      </div>
+      <div class="count-line" id="s1Count">Heat climbing: 0 of 3</div>
+      <div class="next-row" id="s1Next" hidden>
+        <button class="play-btn" id="s1NextBtn" style="margin:0">Next Station ▶</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="station2View" class="lab-view" hidden>
+    <div class="lab-card" id="card2">
+      <div class="station-head">Station 2 · Loud or Soft?</div>
+      <div class="scene">
+        <svg viewBox="0 0 360 130" role="img" aria-label="Sound waves">
+          <g id="wavesBig" style="opacity:0;transition:opacity .4s" stroke="#E2483D" stroke-width="6" fill="none" stroke-linecap="round">
+            <path d="M60,30 q-16,35 0,70 M92,18 q-22,47 0,94 M268,30 q16,35 0,70 M236,18 q22,47 0,94"/>
+          </g>
+          <g id="wavesSmall" style="opacity:0;transition:opacity .4s" stroke="#4A90C2" stroke-width="4" fill="none" stroke-linecap="round">
+            <path d="M120,45 q-9,20 0,40 M208,45 q9,20 0,40"/>
+          </g>
+          <text id="soundText" x="180" y="72" text-anchor="middle" font-size="24" font-weight="800" fill="#52297E">Tap a sound!</text>
+        </svg>
+      </div>
+      <div class="scene-cap" id="s2Cap">Listen! Which sound does Mia want?</div>
+      <div class="big-row">
+        <button class="big-choice" id="drumBtn"><svg viewBox="0 0 100 70"><ellipse cx="50" cy="44" rx="34" ry="20" fill="#E2483D"/><ellipse cx="50" cy="28" rx="34" ry="10" fill="#FFE9A8" stroke="#D98A0B" stroke-width="2.5"/><path d="M22,8 L42,22 M78,8 L58,22" stroke="#7A4A21" stroke-width="5" stroke-linecap="round"/></svg>Drum</button>
+        <button class="big-choice" id="bellBtn"><svg viewBox="0 0 100 70"><path d="M50,10 a22,22 0 0 1 22,22 l4,14 -52,0 4,-14 a22,22 0 0 1 22,-22 Z" fill="#FFC93C" stroke="#D98A0B" stroke-width="3"/><circle cx="50" cy="52" r="6" fill="#D98A0B"/><circle cx="50" cy="8" r="4" fill="#D98A0B"/></svg>Bell</button>
+      </div>
+      <div class="count-line" id="s2Count">Sounds found: 0 of 2</div>
+      <div class="next-row" id="s2Next" hidden>
+        <button class="play-btn" id="s2NextBtn" style="margin:0">See My Stars ⭐</button>
+      </div>
+    </div>
+  </div>
+  <style>
+    .spoon-seg{transition:fill .7s ease;}
+    .spoon-seg.hot{fill:#F06423;}
+  </style>
+
+  <div class="credit">✦ Prepared by: Zulfiqar Ali Sajid ✦</div>
+
+  <div class="overlay" id="endOverlay" hidden>
+    <div class="game-name">🧪 Lab Complete!</div>
+    <h1>Well done,<br>little scientist!</h1>
+    <img class="mascot-dance" src="img/mia-stage.jpg" alt="Mia dancing">
+    <div class="big-score" id="finalStars">You earned 2 ⭐ stars!</div>
+    <div class="moral-pill">⭐ Heat travels, and I keep my ears safe! ⭐</div>
+    <p>Mia is so proud of you!</p>
+    <button class="big-btn" id="againBtn">↻ Do the Lab Again</button>
+    <p><a href="c7.html" style="color:#52297E; font-weight:800;">↩ Back to the Chapter 7 game</a></p>
+    <p><a href="index.html" style="color:#52297E; font-weight:800;">⌂ More chapter games</a></p>
+  </div>
+<script>
+(function(){
+  "use strict";
+  var STAR = '<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 6 L63 37 L96 39 L70 60 L79 93 L50 74 L21 93 L30 60 L4 39 L37 37 Z" fill="#FFC93C" stroke="#E8A20C" stroke-width="5" stroke-linejoin="round"/></svg>';
+  var PRAISE = ["Great job! ⭐", "Well done! ⭐", "Super! ⭐", "Yes! That's right! ⭐", "Hooray! ⭐"];
+  function buzz(){ try{ if(navigator.vibrate){ navigator.vibrate(30); } }catch(e){} }
+  function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+  var actx = null, musicGain = null;
+  function audio(){
+    if(!actx){
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if(AC){ try{ actx = new AC(); }catch(e){ actx = null; } }
+      if(actx){ try{ musicGain = actx.createGain(); musicGain.gain.value = .9; musicGain.connect(actx.destination); }catch(e){ musicGain = null; } }
+    }
+    if(actx && actx.state === "suspended"){ actx.resume(); }
+    return actx;
+  }
+  function toneAt(freq, t, dur, type, vol, dest){
+    var ac = actx; if(!ac) return;
+    var o = ac.createOscillator(), g = ac.createGain();
+    o.type = type || "sine"; o.frequency.value = freq;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol || 0.16, t + 0.03);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(dest || ac.destination);
+    o.start(t); o.stop(t + dur + 0.05);
+  }
+  function tone(freq, t0, dur, type, vol){ var ac = audio(); if(!ac) return; toneAt(freq, ac.currentTime + t0, dur, type, vol, ac.destination); }
+  function chimeRight(){ tone(523.25,0,.22); tone(659.25,.09,.22); tone(783.99,.18,.3); tone(1046.5,.27,.42); }
+  function chimeWrong(){ tone(294,0,.2,"triangle",.08); tone(233,.12,.26,"triangle",.08); }
+  function chimeWin(){ var n=[523.25,659.25,783.99,1046.5,783.99,1046.5,1318.5]; for(var i=0;i<n.length;i++){ tone(n[i], i*.13, .34); } }
+  function popSound(){ tone(500,0,.07,"triangle",.06); tone(760,.05,.09,"triangle",.05); }
+  var MEL_A = [659.25,783.99,880,783.99, 659.25,587.33,659.25,783.99, 880,1046.5,880,783.99, 659.25,783.99,659.25,587.33];
+  var MEL_B = [523.25,659.25,783.99,880, 783.99,659.25,587.33,659.25, 698.46,880,783.99,659.25, 587.33,659.25,0,0];
+  var BASSN = [130.81, 98.00, 110.00, 98.00];
+  var STEP_DUR = 0.24;
+  var musicOn = true, musicPlaying = false, musStep = 0, musNext = 0, musTimer = null;
+  function scheduleStep(s, t){
+    var mel = ((Math.floor(s/16) % 2 === 0) ? MEL_A : MEL_B)[s % 16];
+    var dest = musicGain || actx.destination;
+    if(mel > 0){ toneAt(mel, t, .34, "sine", .05, dest); toneAt(mel*2, t, .12, "sine", .012, dest); }
+    if(s % 8 === 0){ toneAt(BASSN[(s >> 3) % 4], t, .55, "triangle", .04, dest); }
+    if(s % 16 === 15){ toneAt(1567.98, t, .3, "sine", .014, dest); }
+  }
+  function musicScheduler(){ if(!actx) return; while(musNext < actx.currentTime + 0.20){ scheduleStep(musStep, musNext); musNext += STEP_DUR; musStep++; } }
+  function startMusic(){ if(!musicOn || musicPlaying) return; var ac = audio(); if(!ac) return; musStep = 0; musNext = ac.currentTime + 0.08; musTimer = setInterval(musicScheduler, 90); musicPlaying = true; }
+  function stopMusic(){ if(musTimer){ clearInterval(musTimer); musTimer = null; } musicPlaying = false; }
+  var hasSpeech = ("speechSynthesis" in window);
+  var voiceOn = hasSpeech, voiceCache = null;
+  function pickVoice(){
+    if(!hasSpeech) return null;
+    try{
+      var vs = window.speechSynthesis.getVoices();
+      if(vs && vs.length){ voiceCache = vs; }
+      var list = voiceCache || vs || [], best = null, bestScore = -1, i, v, name, lang, s;
+      for(i=0;i<list.length;i++){
+        v = list[i]; name = v.name || ""; lang = v.lang || "";
+        if(!/^en/i.test(lang)) continue;
+        s = 0;
+        if(/google us english/i.test(name)) s += 60;
+        if(/natural/i.test(name)) s += 45;
+        if(/neural/i.test(name)) s += 45;
+        if(/premium|enhanced/i.test(name)) s += 35;
+        if(/google/i.test(name)) s += 25;
+        if(/aria|jenny|zira|samantha|allison|ava|joanna|salli|emma|amy|bella|ana|michelle|katie|lucy|linda|susan|catherine|karen|sarah|jessica|ashley/i.test(name)) s += 30;
+        if(/female/i.test(name)) s += 25;
+        if(/guy|christopher|eric|roger|brian|james|john|david|mark|kevin|andrew|brandon/i.test(name)) s -= 15;
+        if(/en[-_]US/i.test(lang)) s += 15;
+        else if(/en[-_]GB/i.test(lang)) s += 10;
+        else s += 4;
+        if(v.localService === false) s += 2;
+        if(s > bestScore){ bestScore = s; best = v; }
+      }
+      return best;
+    }catch(e){}
+    return null;
+  }
+  if(hasSpeech){ try{ window.speechSynthesis.onvoiceschanged = function(){ pickVoice(); }; pickVoice(); }catch(e){} }
+  var speechUnlocked = false, pendingSay = null, pendingEmo = "instruct";
+  var EMO_PITCH = {story:1.03, question:1.10, praise:1.20, retry:0.95, instruct:1.05};
+  var sayQ = [], sayBusy = false, sayWdog = null, sayWaiters = [], saySeq = 0;
+  function sayEstimateMs(text){
+    var words = (text || "").split(/\s+/).filter(Boolean).length;
+    return Math.max(4000, Math.min(1800 + words * 620, 25000));
+  }
+  function speechActive(){ return !!(voiceOn && hasSpeech && speechUnlocked && (sayBusy || sayQ.length)); }
+  function releaseSayWaiters(){
+    if(sayBusy || sayQ.length) return;
+    var ws = sayWaiters; sayWaiters = [];
+    for(var i = 0; i < ws.length; i++){ try{ ws[i](); }catch(e){} }
+  }
+  function whenSpeechDone(cb){ if(!speechActive()){ cb(); return; } sayWaiters.push(cb); }
+  function afterMia(cb, minMs){
+    var t0 = Date.now();
+    whenSpeechDone(function(){
+      var wait = (minMs || 0) - (Date.now() - t0);
+      if(wait > 0){ setTimeout(cb, wait); } else { cb(); }
+    });
+  }
+  function pumpSpeech(){
+    if(sayBusy) return;
+    var item = sayQ.shift();
+    if(!item){ releaseSayWaiters(); return; }
+    sayBusy = true;
+    var gen = saySeq, finished = false;
+    function done(){
+      if(finished || gen !== saySeq) return;
+      finished = true;
+      if(sayWdog){ clearTimeout(sayWdog); sayWdog = null; }
+      sayBusy = false;
+      miaTalk(false);
+      pumpSpeech();
+    }
+    var u;
+    try{ u = new SpeechSynthesisUtterance(item.text); }
+    catch(e){ sayBusy = false; pumpSpeech(); return; }
+    u.lang = "en-US"; u.rate = 0.85; u.pitch = EMO_PITCH[item.emo] || 1.05;
+    var v = pickVoice(); if(v){ try{ u.voice = v; }catch(e){} }
+    u.onstart = function(){ if(gen === saySeq){ miaTalk(true, item.emo); } };
+    u.onend = done;
+    u.onerror = done;
+    u.onboundary = function(){ if(gen === saySeq){ miaPulse(); } };
+    sayWdog = setTimeout(done, sayEstimateMs(item.text));
+    try{ window.speechSynthesis.speak(u); }
+    catch(e){ done(); }
+  }
+  function speak(text, emo){
+    if(!voiceOn || !hasSpeech || !text) return;
+    emo = emo || "instruct";
+    if(!speechUnlocked){ pendingSay = text; pendingEmo = emo; return; }
+    var last = sayQ[sayQ.length - 1];
+    if(last && last.text === text && last.emo === emo) return;
+    sayQ.push({text:text, emo:emo});
+    pumpSpeech();
+  }
+  window.addEventListener("pointerdown", function(){
+    if(speechUnlocked) return;
+    speechUnlocked = true;
+    if(pendingSay){ var t = pendingSay, pe = pendingEmo; pendingSay = null; speak(t, pe); }
+  }, true);
+  function stopSpeak(){
+    saySeq++;
+    sayQ.length = 0;
+    if(sayWdog){ clearTimeout(sayWdog); sayWdog = null; }
+    sayBusy = false;
+    miaTalk(false);
+    if(hasSpeech){ try{ window.speechSynthesis.cancel(); }catch(e){} }
+    releaseSayWaiters();
+  }
+  var musicBtn = document.getElementById("musicBtn"), voiceBtn = document.getElementById("voiceBtn");
+  if(!hasSpeech){ voiceBtn.style.display = "none"; }
+  musicBtn.addEventListener("click", function(){
+    musicOn = !musicOn;
+    musicBtn.classList.toggle("off", !musicOn);
+    musicBtn.setAttribute("aria-pressed", musicOn ? "true" : "false");
+    if(musicOn){ startMusic(); } else { stopMusic(); }
+  });
+  voiceBtn.addEventListener("click", function(){
+    voiceOn = !voiceOn;
+    voiceBtn.classList.toggle("off", !voiceOn);
+    voiceBtn.setAttribute("aria-pressed", voiceOn ? "true" : "false");
+    if(!voiceOn){ stopSpeak(); }
+  });
+  (function petals(){
+    var box = document.getElementById("petals");
+    var colours = ["#CDEFF2","#FFF3D6","#FFE9A8","#DFF0E4"];
+    for(var i=0;i<9;i++){
+      var p = document.createElement("span");
+      p.className = "petal";
+      var w = 9 + Math.random()*8;
+      p.style.width = w + "px"; p.style.height = (w*1.35) + "px";
+      p.style.left = (Math.random()*96) + "vw";
+      p.style.background = colours[i % colours.length];
+      p.style.animationDuration = (11 + Math.random()*9) + "s";
+      p.style.animationDelay = (-Math.random()*16) + "s";
+      box.appendChild(p);
+    }
+  })();
+  var speechEl = document.getElementById("speech"),
+      praiseEl = document.getElementById("praise"),
+      scoreBox = document.getElementById("scoreBox"),
+      scoreCountEl = document.getElementById("scoreCount"),
+      mascotEl = document.getElementById("mascot"),
+      mascotWrap = document.getElementById("mascotWrap"),
+      thumbPopEl = document.getElementById("thumbPop"),
+      dockEl = document.getElementById("dock"),
+      titleView = document.getElementById("titleView"),
+      startBtn = document.getElementById("startBtn"),
+      endOverlay = document.getElementById("endOverlay"),
+      finalStarsEl = document.getElementById("finalStars");
+  var stars = 0, lastPrompt = "";
+  function updateStars(bumpIt){
+    scoreCountEl.textContent = stars;
+    if(bumpIt){ scoreBox.classList.remove("bump"); void scoreBox.offsetWidth; scoreBox.classList.add("bump"); }
+  }
+  function miaTalk(on, emo){
+    if(!mascotWrap) return;
+    if(emo){ mascotWrap.dataset.emotion = emo; }
+    mascotWrap.classList.toggle("speaking", !!on);
+    if(!on){ mascotWrap.classList.remove("pulse"); }
+  }
+  function miaPulse(){
+    if(!mascotWrap) return;
+    mascotWrap.classList.remove("pulse"); void mascotWrap.offsetWidth; mascotWrap.classList.add("pulse");
+    setTimeout(function(){ mascotWrap.classList.remove("pulse"); }, 280);
+  }
+  function thumbPopNow(){
+    if(!thumbPopEl) return;
+    thumbPopEl.classList.remove("pop"); void thumbPopEl.offsetWidth; thumbPopEl.classList.add("pop");
+  }
+  function pointMia(){
+    if(!mascotWrap) return;
+    mascotWrap.classList.add("pointing");
+    setTimeout(function(){ mascotWrap.classList.remove("pointing"); }, 1400);
+  }
+  function mascotReact(cls){
+    mascotEl.classList.remove("cheer","encourage"); void mascotEl.offsetWidth;
+    if(cls){ mascotEl.classList.add(cls); }
+    if(cls === "cheer"){ thumbPopNow(); }
+  }
+  function say(text, emo){
+    speechEl.textContent = text;
+    lastPrompt = text;
+    if(emo === false) return;
+    speak(text, (typeof emo === "string") ? emo : "instruct");
+  }
+  function praise(text){ praiseEl.textContent = text; praiseEl.classList.add("show"); }
+  function clearPraise(){ praiseEl.textContent = ""; praiseEl.classList.remove("show"); }
+  function burstIn(container, leftPct, topPct, n){
+    for(var i=0;i<(n||7);i++){
+      var s = document.createElement("div");
+      s.className = "burst-star"; s.innerHTML = STAR;
+      var size = 18 + Math.random()*18;
+      s.style.width = size+"px"; s.style.height = size+"px";
+      s.style.left = leftPct+"%"; s.style.top = topPct+"%";
+      s.style.setProperty("--dx", (Math.random()*260-130)+"px");
+      s.style.setProperty("--dy", (Math.random()*-160-30)+"px");
+      container.appendChild(s);
+      (function(el){ setTimeout(function(){ el.remove(); }, 900); })(s);
+    }
+  }
+  function celebrate(cardEl){
+    var p = PRAISE[Math.floor(Math.random()*PRAISE.length)];
+    praise(p);
+    mascotReact("cheer");
+    chimeRight(); buzz();
+    speak(p, "praise");
+    if(cardEl){ burstIn(cardEl, 50, 30, 7); }
+  }
+  function onWrong(btn, retryLine){
+    if(btn){ btn.classList.remove("wrong"); void btn.offsetWidth; btn.classList.add("wrong"); }
+    mascotReact("encourage");
+    chimeWrong();
+    say(retryLine, "retry");
+  }
+  dockEl.addEventListener("click", function(){ if(lastPrompt){ speak(lastPrompt, "instruct"); } });
+  function rainCelebration(){
+    var colours = ["#E07B26","#FFC93C","#3E9B4F","#4A90C2","#B04FA0"];
+    for(var i=0;i<26;i++){
+      var c = document.createElement("div");
+      if(i % 3 === 0){ c.className = "fall-star"; c.innerHTML = STAR; c.style.width = "30px"; c.style.height = "30px"; }
+      else { c.className = "confetti"; c.style.width = "9px"; c.style.height = "15px"; c.style.background = colours[i % colours.length]; }
+      c.style.left = (Math.random()*96) + "vw";
+      c.style.animationDuration = (2.4 + Math.random()*2.2) + "s";
+      c.style.animationDelay = (Math.random()*0.9) + "s";
+      document.body.appendChild(c);
+      (function(el){ setTimeout(function(){ el.remove(); }, 6000); })(c);
+    }
+  }
+  function el(id){ return document.getElementById(id); }
+  function gateBtn(btn, minMs){
+    if(!btn) return;
+    btn.classList.add("waiting"); btn.disabled = true;
+    afterMia(function(){ btn.classList.remove("waiting"); btn.disabled = false; }, minMs);
+  }
+  var NST = 2;
+  var views = [null];
+  for(var _vi=1; _vi<=NST; _vi++){ views.push(el("station"+_vi+"View")); }
+  var doneFlags = {};
+  function showStation(n){
+    titleView.hidden = true;
+    for(var i=1;i<=NST;i++){
+      views[i].hidden = (i !== n);
+      el("chip"+i).classList.toggle("now", i === n && !doneFlags[i]);
+    }
+    clearPraise();
+    pointMia();
+    say(INTRO[n], "question");
+    window.scrollTo(0, 0);
+  }
+  function finishStation(n, resultLine, nextRow, nextBtn){
+    doneFlags[n] = true;
+    stars++; updateStars(true);
+    var chip = el("chip"+n);
+    chip.classList.remove("now"); chip.classList.add("done");
+    chip.textContent = "\u2B50 " + n + " \u00B7 " + NAMES[n];
+    say(resultLine, "story");
+    burstIn(el("card"+n), 50, 14, 9);
+    nextRow.hidden = false;
+    if(nextBtn){ gateBtn(nextBtn, 1100); }
+  }
+  function showFinish(){
+    for(var i=1;i<=NST;i++){ views[i].hidden = true; }
+    finalStarsEl.textContent = "You earned " + stars + " \u2B50 stars!";
+    endOverlay.hidden = false;
+    chimeWin(); rainCelebration(); buzz();
+    say(FINISH_LINE, "praise");
+    window.scrollTo(0, 0);
+  }
+
+  var NAMES = ["", "Heat Climbs Up", "Loud or Soft?"];
+  var INTRO = { 1: "Hot water in the cup! Heat the water and watch the spoon!", 2: "Mia asks you. Tap the loud one, or the soft one!" };
+  var FINISH_LINE = "You felt the heat and heard the sounds. Great work!";
+  var HELLO = "Hello! I am Mia! Welcome to my Heat and Sound Lab!";
+  /* Station 1: heat climbs the spoon */
+  var heats = 0;
+  el("heatBtn").addEventListener("click", function(){
+    if(heats >= 3) return;
+    heats++;
+    el("seg" + heats).classList.add("hot");
+    el("steamG").style.opacity = String(.3 + heats * .23);
+    el("flameG").style.opacity = "1";
+    el("s1Count").textContent = "Heat climbing: " + heats + " of 3";
+    popSound(); buzz();
+    setTimeout(function(){ el("flameG").style.opacity = "0"; }, 650);
+    if(heats >= 3){
+      el("heatBtn").disabled = true;
+      el("s1Cap").textContent = "The whole spoon is hot now!";
+      celebrate(el("card1"));
+      finishStation(1, "Heat moves through the metal spoon, up and up!", el("s1Next"), el("s1NextBtn"));
+    } else {
+      el("s1Cap").textContent = "The heat is climbing up the spoon!";
+      say("The heat is climbing!", "instruct");
+    }
+  });
+  el("s1NextBtn").addEventListener("click", function(){ popSound(); showStation(2); askSound(0); });
+  /* Station 2: loud or soft */
+  var SOUND_ROUNDS = [
+    { want: "Drum", ask: "Tap the LOUD sound!", wrong: "The bell is soft and gentle. The drum is LOUD — tap the drum!" },
+    { want: "Bell", ask: "Now tap the SOFT sound!", wrong: "The drum is loud — boom boom! The bell is soft — tap the bell!" }
+  ];
+  var soundIdx = 0, soundBusy = false;
+  function askSound(i){
+    soundIdx = i; soundBusy = false;
+    el("s2Cap").textContent = SOUND_ROUNDS[i].ask;
+    say(SOUND_ROUNDS[i].ask, "question");
+  }
+  function tapSound(which, btn){
+    if(soundBusy) return;
+    var r = SOUND_ROUNDS[soundIdx];
+    if(which === r.want){
+      soundBusy = true; btn.classList.add("right");
+      if(which === "Drum"){
+        el("wavesBig").style.opacity = "1"; el("wavesSmall").style.opacity = "0";
+        el("soundText").textContent = "BOOM! BOOM!";
+        tone(90, 0, .35, "square", .12); tone(90, .3, .35, "square", .12);
+        say("Boom boom! The drum is LOUD! Cover your ears!", "praise");
+      } else {
+        el("wavesSmall").style.opacity = "1"; el("wavesBig").style.opacity = "0";
+        el("soundText").textContent = "ting… ting…";
+        tone(1318.5, 0, .5, "sine", .1); tone(1568, .35, .6, "sine", .08);
+        say("Ting ting! The bell is soft and gentle.", "praise");
+      }
+      buzz(); mascotReact("cheer");
+      el("s2Count").textContent = "Sounds found: " + (soundIdx + 1) + " of 2";
+      setTimeout(function(){
+        btn.classList.remove("right");
+        if(soundIdx + 1 < SOUND_ROUNDS.length){ askSound(soundIdx + 1); }
+        else { el("drumBtn").disabled = true; el("bellBtn").disabled = true;
+          finishStation(2, "The drum is loud — cover your ears! The bell is soft and gentle.", el("s2Next"), el("s2NextBtn")); }
+      }, 1400);
+    } else { onWrong(btn, r.wrong); }
+  }
+  el("drumBtn").addEventListener("click", function(){ tapSound("Drum", el("drumBtn")); });
+  el("bellBtn").addEventListener("click", function(){ tapSound("Bell", el("bellBtn")); });
+  el("s2NextBtn").addEventListener("click", function(){ popSound(); showFinish(); });
+  el("againBtn").addEventListener("click", function(){ location.reload(); });
+  startBtn.addEventListener("click", function(){ audio(); startMusic(); showStation(1); });
+  say(HELLO, "story");
+
+})();
+</script>
+</body>
+</html>
